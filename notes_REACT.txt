@@ -371,7 +371,45 @@ JSX :
 
 Life cycles in react
 Optimization techniques (useMemo, useCallback)
-Pure Component
+
+Pure Component : 
+
+    in react is like a super-efficient worker who does a task only 
+    if absolutely necessary. 
+
+    it checks if the input (data or props) has changed before doing 
+    it's work (re-rendering). 
+
+    if the input hasn't changed, it just skips the task to save time 
+    and resources.
+
+    it automatically prevents unnecessary re-renders 
+    it performs shallow comparison of its props and state 
+    if the values havent changed, react skips re-rendering 
+        the component 
+
+        2 types : 
+
+            class-based : 
+                React.PureComponent
+            
+            functional : 
+                React.memo() (optimised)
+
+    normal comp will re-render every time it's parent 
+    comp re-renders 
+
+    but 
+
+    pure comp performs a shallow comparison of the current props/state 
+    with the previous ones before re-rendering.
+
+    use : 
+        when your comp renders the same output for the same set 
+        of props and state 
+        
+
+
 state management (Redux, context and difference)
 render props
 Routing

@@ -1,0 +1,691 @@
+saparation of concerns > class diagram :
+abstraction-Occurrence, Observer and player-role
+
+abstraction-Occurrence pattern : 
+
+    modeling pattern
+    found in class diagram \
+
+    Context
+        In many systems, we deal with groups of objects 
+        where: Some details are shared among all members 
+        of the group.Some details are specific to 
+        individual members of the group.
+    
+    problem : how to we deginf sets in class diagram 
+    so that 
+        no duplication of shared info for each object 
+        changing shared info updates for all members of the grp
+            autometically
+        it is flexible, avoids mistakes : inconsitencies 
+            or missing updates
+        
+    solution : 
+        create 2 classes
+            abtracion class(for shared data) and 
+                occurence class(for specific data)
+        connect these classes with a 1-to-M relationship
+            one abstraction is linked to multiple occurences
+    
+    example :
+
+    Abstraction Class             Occurrence Class
+    +------------------+          +------------------+
+    | TVSeries / Title |          | Episode / Copy   |
+    +------------------+          +------------------+
+    | Shared Fields    |          | Unique Fields    |
+    | e.g., Producer   | -------> | e.g., Barcode    |
+    | e.g., Author     |          | e.g., Storyline  |
+    +------------------+          +------------------+
+
+
+
+
+hierarchies of instances > pattern > general hierarchies
+
+general hierarchies : 
+    
+    context :
+
+    some objects can have subordinates some 
+    can not have subordinates
+
+    ex. organization chart, file system, user interface
+
+    Problem : 
+
+    how do we design a class diagram to 
+        represent a hierarchies
+        objects share common prop. in hierarchy
+        allow flexibility where a node can have multiple 
+            superiors
+
+    Solution :
+
+    create a base class : 
+        generic class represents common prop for all objects
+    
+    create specialized class :
+        a superiorNode subclass for objects that can have 
+            subordinates 
+        a nonSuperiorNode subclass for objects that can not 
+            have subordinates
+
+    subordinates association : 
+        superiorNode links to the Node class via a 
+            subordinates association
+
+        this means a superiorNode can have subordinates 
+            that are either superiorNodes or nonSuperiorNodes
+
+        ex. Node -> superiorNode OR 
+        Node -> nonSuperiorNode 
+
+    example 
+        
+        base class : employee 
+
+        subclass : manager(can have subs) and 
+            staff(can not have subs)
+
+        relationship : manager --1--to--M-- Employee
+
+        +--------------------+
+        |     Employee       |
+        |--------------------|
+        | Name, EmployeeID   |
+        +--------------------+
+                ▲
+                |
+        +------------------+      +------------------+
+        |     Manager      |      |      Staff       |
+        |------------------|      |------------------|
+        | Subordinates     |      | No Subordinates |
+        +------------------+      +------------------+
+
+    use : flexibility, reusability, clarity
+
+Player-role Pattern : 
+    context : some objects can have dynamic roles
+        that may change over time or overlap
+
+        ex. students : undergrad student, post grad student
+            fulltime stud, part time stud
+        
+    Problem : 
+
+        dynamically assign role to objects 
+        allow objects to have multiple role simulteneously
+            without ducplication of information
+        manage where roles are independent(ex. attendence
+            status and education level for a stud)
+    
+    solution : 
+
+        create a player class :    
+            represent the object that can take on roles
+            holds the core attr. and behavior shared by 
+                all instances
+        
+        create one or more role class :
+            represent the roles that the player can take on
+        
+        associate the player class with role Class
+            1-to-many association : a player can have 
+                multiple roles simultaneously
+            independent roles : use saparate role superclass
+                for independent types of roles 
+
+        ex.
+
+            player class : animal
+
+            role classes : aquatic, landbased
+
+            association : animal can have one or both roles
+                (eg. turtle)
+
+            other one 
+                +----------------+       +--------------------+
+                |    Student     |       | AttendanceStatus   |
+                |----------------|       |--------------------|
+                | Name           |       | FullTime / PartTime|
+                | StudentID      |<----->|--------------------|
+                +----------------+       +--------------------+
+
+                        ^
+                        |
+                +--------------------+
+                |  EducationLevel    |
+                |--------------------|
+                | Undergraduate      |
+                | Graduate           |
+                +--------------------+
+
+Singleton pattern : 
+    ensures class has only one instance throughout the life
+    time of a program.
+
+    context : when only one instance of a class is needed
+        to control certain operation 
+
+        ex. a company class that represents the entire organization
+
+    problem : 
+        no more than one instancee of a class is created 
+
+        the single instance is accesible globally to any 
+            class that needs it.
+
+    challenges : 
+
+        using a pulic constructor allows multiple instance
+            to be created
+        
+        the instance needs to be globally accesible while
+            still maintaining control over its creation
+        
+    solution : 
+
+        private constructor: 
+
+            prevents any class or code outside the Singleton
+                from creating an instance
+        
+        static instance variable : 
+
+            stores the single instance of the class
+        
+        public static metod(getInstance) : 
+
+            ensures that the instance is created only once.
+
+            returns the same instance for subsequent calls
+
+    implementation (code) : 
+
+        public class company {
+            private static company theInstance;
+
+            private Company(){
+                cout << "singleton instance created"
+            }
+
+            public static Company getInstance(){
+                if(theInstance==null)
+                {
+                    theInstace=new Company();
+                }
+                return theInstance;
+            }
+        }
+
+    use of singleton instance should not be overused 
+        because singleton instance is a global variable 
+        and use of it should ne minimized
+
+The Observer Pattern : 
+
+    behavioral design pattern 
+
+    used to establish a one-to-many dependency between 
+    objects, ensuring waht when one object (the Observable)
+    changes its state, all dependent objects(the Observer)
+    are automatically notified and updated.
+
+    used in realtime updates, event-driven programming and 
+    system that require modular communication between 
+    objects
+
+    Context : 
+        Two-way dependency issue:
+            when two class depend on each other, they
+            become tightly coupled.
+
+            changes in one class often necessitate changes
+            in the other, making the system harder to 
+            maintain and reuse.
+
+        decoupling communication : 
+
+            the Observer pattern allows objects to communicate
+            indirectly without explicitly refering each other
+
+            observer can listen for chanegs in the observable 
+            without the observable knowing anout the specifics
+            of the observers.
+
+    problem : 
+
+        how do you ensure objects can communicate dynamically
+        without knowing about each other
+
+        how maintain flexibility and modularity when designing
+        system with interdependent components?
+
+    solution : 
+
+        2 Comps : 
+
+        observable : 
+            a class that maintains a list of observer and 
+            notifies them  when its state changes.
+
+            responsibilities : 
+                allow observers to register or deregister
+
+                notify all registered observers of any updates
+
+        observer : 
+            an interface that defines a method to receive
+            notifications
+
+            any class can become an observer by implementing
+            this interface.
+
+            
+Adapter Pattern
+
+    structural design pattern
+
+    enables classes with incompatible interface to work together
+
+    acts as a bridge
+
+    allows a client to interect with an existing class that 
+    doesnt match the client's expectation
+
+    context : 
+
+        you want to reuse a third party class (adaptee) 
+        that has useful methods but their names, parameters
+        or behavior dont match what your application expects
+
+    problem : 
+
+        how to reuse class with a different interface 
+        without modifying it.
+
+    forces (challenges) : 
+
+        direct modification of class is not possible
+
+        want polmorphism so that the reused class can integrate
+        seamlessly with your system
+
+        multiple inheritance may not be available or suitable 
+        for your use case.
+
+    solution : 
+
+        adapter class : 
+
+            implements target interface (which is expected
+            by the client )
+
+            internally it holds a reference to the reused class
+            (the adaptee)
+
+            translates the client's method calls to the methods 
+            of the adaptee.
+
+        the target interface(adaptee) defines what the client expects 
+
+        the adaptee contains existing logic and methods 
+
+        the client interects with the adapter class, unaware 
+        of the adaptee.
+
+The facade pattern 
+
+    structural design Pattern
+
+    provides simplified interface to complex subsystem
+
+    context: 
+
+        app consist of many complex subsystem 
+
+        programmers face difficulty understanding and using 
+        all available methods
+
+    problem : 
+
+        Complexity : should be understanded by programmers
+
+        tight coupling : if multiple classes depends on subsystem,
+        any changes to it can cause widespread modifications in
+        the depdendent code.
+
+    solution : 
+
+        inroduce a facade class (outer appearance)
+        simplifies access : 
+            offers a limited and simplified set of public methods
+            to interect with the subsystem
+
+        encapsulation :
+            hides underlying Complexity
+
+        desouples dependecies : 
+            changes in subsystem only affects the facade not
+            the client code.
+
+immutable pattern :
+ 
+    context : 
+        objects : whose state can not be changed
+
+        use case : they are trust worthy because their 
+        state can not be altered 
+    
+    problem : 
+        how to design a class such that its instances 
+        remain immutable and no part of the program can 
+        modify them after creation
+
+    forces : 
+        enforcement :
+            strict mechanism are required to ensure the
+            object's state is truly immutable
+
+        no loopholes : 
+            there should be no methods or external ways to 
+            modify internal state.
+
+    solution : 
+
+        private fields 
+
+        final fields 
+
+        immutable data types : String, Integer
+
+        no setters 
+
+        constructor
+
+        defensive copies 
+
+        new instances 
+
+The read-only interface pattern 
+
+    context :
+        relation to immutable pattern : similar to 
+        immutability but with selective mutability 
+        for specific privileged classes.
+
+        need : some classes required write access, while others
+        only need read only access
+    
+    problem : 
+        how to ensure that only some class could modify 
+        the object and others will see it as immutable
+
+    forces : 
+        granular control : public class gives both access 
+        to all classes
+        
+        safety : prevent unprivileged parts of the system from 
+        altering object state.
+
+    solution : 
+        mutable class : create a class with both read & 
+        write operation
+
+        read-only interface : interface with only getters
+
+        interface implementation : make the mutable class
+        implement the read-only interface
+
+        restricted access : pass instances of the readOnlyInteface
+        to classes requiring only read access.privileged classes
+        can use the full mutable class.
+
+
+Delegation pattern > a method acalls another method in 
+another class > patterns : adapter, facade and proxy
+
+patterns : immutable and read-only interface > 
+protect other objects from unanticipated access 
+
+pattern : factory > helps you create application-specific 
+objects in a framwork.
+
+pattern : is outline of a reusable solution to a general 
+problem encountered in a particular context.
+
+arhitecutal pattens : which are used at very higher level
+of software design
+
+good design pattens : as general as possible, proven 
+to solve the problem in perticuler context, easy to 
+understand, lerning it means lerning from other's 
+experience
+
+Template of design pattern : 
+
+    name
+    context : where pattern applies
+    problem : explaining difficulty
+    forces : concerns that you need to take care when solving
+    antipatterns : solution that do not work (optional)
+    related patterns : similar patterns (optional)
+    references : credits
+
+
+
+UML Deployement Diagrams : 
+
+    physical arranngement of the hardware and software in 
+    a system
+
+
+    key elements : 
+        nodes : ex. servers
+
+        artifacts : physical fileas like exe or db
+
+        communication paths : connection btw nodes
+
+        stereotypes : additional tags for nodes/artifacts
+            ex. <<server>>, <<database>>
+
+    
+    use cases : 
+
+        webservices : depicts > services are deployed on server 
+            or cloud platform 
+            ex. a REST API hosted on AWS EC2 instances
+
+        web application : modeling web application 
+
+            shows multi-tier architecture 
+                
+                web tier : user interaction 
+
+                app tier : processes business logic 
+
+                data tier : manages data storage
+        
+        API integration : 
+
+            models deployment of APIs interacting with 
+                other services
+
+            Ex. an API deployed on a server communicating
+                with a payment gateway.
+
+         
+
+
+        APIs : RESTful/SOAP APIs
+    
+    advanced deployment architecture : 
+
+        multi-tier : web app and database tiers
+
+        cloud-based : uses AWS, etc.
+
+        microservices : inpendent services with APIs and db
+
+        hybrid cloud : combines cloud and on-premise nodes
+
+        edge computing : process data closer to IoT devices
+
+    Best practices 
+
+        clearly define nodes, artifacts and relationsships
+
+        use appropriate stereotypes, security and operations
+
+        include scalability, security and operational details 
+    
+    common mistakes 
+
+        overcrowded diagrams or missing relationsships
+        
+        ignoring cloud/on-premise distinctions
+
+        failing to reflect scalability or dynamic changes
+    
+
+
+Architecture Design and visualization 
+    component diagrams 
+    deployement diagrams 
+
+service interaction and communication   
+    sequence diagram
+    collaboration diagram
+
+behavioral modeling 
+    activity diagram
+    state diagram
+
+component digrams
+    
+    structure of the web service
+    
+    depicting components like databases application server
+
+    part of structural diagrams 
+
+    useful for representing high level of architecture of a 
+    system
+
+    purpose : 
+
+        to visualize oraganization and dependencies among 
+        a set of components 
+
+        to illustrate the high-level structure of the system
+
+        to assist in system decomposition
+
+    
+    Components : a modular part of the system that encapsulates 
+    its contents and whose manifestation is replaceable within
+    its environment
+
+    Provided interface : 
+         
+        a straight line from the component box with an attached
+        circle .
+
+        when a component produces information used by the
+        required interface
+
+    required interface : 
+        a straight line from the component box with an attached 
+        half circle
+
+        where a component requires information in order to perform
+        its proper function
+    
+
+    ex . Ecommerce system 
+
+        user interface
+        business logic
+        datebase
+        payment gateway
+
+                                    user interface <<component>>
+                                            ^
+    paymentgateaway <<component>> ----> business logic <<component>> ----> database <<component>>
+
+    best practices for component Diagrams   
+        
+        modularity 
+
+        encapsulation
+
+        clear dependencies
+
+        reuse
+        
+        consistency in naming
+
+        clarity in diagrams
+
+        use of stereotypes : <<component>> <<service>>
+
+        documentation
+
+Component diagram for web services
+
+    UML components diagrams help in visualizing architecture 
+    of  web services by : 
+
+        identifying service components and their interactions
+
+        defining service interface and dependencies
+
+        illustrating service orchestration and choreography
+
+    Facilitates understanding of service-oriented architecures
+    and microservices
+
+    
+
+
+
+deployment diagram 
+
+    for cloud app 
+
+    represents distribution of software accross server 
+
+    illustrating the nodes and the communication btw them
+
+Sequence diagram 
+
+    interaction btw services 
+
+    shows how request flows from client to the web
+    passes through APIs 
+
+Collaboration diagram 
+
+    shows relationship btw objects, how they work together
+
+    it can model the interaction btw them
+
+Activity diagram 
+
+    models workflows like authentication, data processing
+    by representing the flow of activities and decision made
+    in application
+
+State diagrams
+
+    models behaviour of specific components 
+
+    a state dia. can represent the lifecycle of a user 
+    session in a web app
+
+
+
+

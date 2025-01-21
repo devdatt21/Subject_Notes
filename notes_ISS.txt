@@ -1,0 +1,1163 @@
+Padhai Mode : ON 
+
+what is security ?
+    on one hand 
+        making sure that bad things do not happen
+        reducing the chances that bad things happen
+        lowering the impact of bad things
+        providing the means to recover
+
+    on other hand 
+        allowing good things to happen
+        managing the const of the system
+
+
+INFOSEC(information system security) provides processes,
+methodology that ensure (CIA) confidentiality, integrity and 
+availability of information
+
+
+Computer security
+    Data storage sec. 
+    data access sec.
+    OS sec.
+    Event logs
+    Backup and recovery
+
+Classification of information
+    Top Secret 
+    Secret
+    confidential 
+    restricted
+    unclassified
+
+Cryptography : 
+    an art of transforming intelligible text(plain text) to 
+    unintelligible text(cipher text)
+
+important components 
+    plaintext
+    key 
+    ciphertext
+
+
+cryptanalysis : an art of breaking cryptographic code 
+    chosen plaintext
+    chosen ciphertext
+
+cyptology : cryptography + cryptanalysis
+
+conditional cryptography : difficult to break
+    relies on hard problems
+
+unconditional cryptography : unbreakable
+
+conventional cryptography 
+    symmetric key cryptography 
+        same key is used for encryption/decryption
+
+        substitution : 
+            substitute plaintext with another text in such
+            a way that it would be difficult to predict the 
+            plaintext. here, key is distance between plaintext
+            lettter and ciphertext letter.
+        
+
+    public-key cryptography (asymmetric key crypto)
+        
+        size of secret key must resist brute-force 
+
+        encryption algorithm must use substitution and 
+            permutation 
+
+        must provide avalanch effect 
+            a small change in input results in a large and 
+            unpredictable change in output
+
+            we can achieve this if on average changing 1 
+            bit in plaintext changes 50% of the bits in 
+            cipher text 
+
+        one key is used for encryption and other key 
+        (related to public key) is used for decryption
+
+Key size should be at least 128 bits to be safe 
+
+block cipher : a block of bits (64 , 128 bits ) is encrypted 
+    at a time 
+
+    DES(data encryption standard), 3DES(3 times iteratively 
+    data encryption standard), AES (advanced encryption 
+    standard), IDEA(international data enc. algo.), 
+    twofish  
+
+stream cipher : a bit or a byte is ecrypted at a time 
+    LFSR, RC4
+
+
+Kerberos : The network authentication Protocol
+
+kerberos is a secure authentication protocol that enables 
+two parties to prove their identities to each other over an 
+insecure network. it also facilitates secure communication 
+by exchanging session keys for encryption and integrity 
+protection.
+
+
+core themes of kerberos :
+
+    authentication
+        ensures both parties are who they claim to be
+
+    key agreement
+        Establishes shared keys for encrypting and protecting 
+        data
+
+    Encrypted data exchange
+        facilitates communication over a secure channel
+        with encryption.
+    
+
+Key components : 
+
+    clients 
+
+    servers 
+
+    key distribution center : facilitates authentication 
+        and key distribution
+
+        authentication server : issues initial credentials
+
+        ticket granting server : issues tickets for 
+            accessing specific service.
+
+
+    realm
+        a trust domain where all clients, server and KDCs
+        share a common trust relationship.
+
+    
+High level workflow : 
+    
+    a client reqeust access to a server.
+
+    the KDC authentication client , issues a TGT (ticket
+        granting ticket)
+
+    with TGT client reqeust a service ticket from TGS 
+
+    client sends service ticket to the server for secure 
+    communication
+
+
+first SSL(secure socket layer) and then TLS(transport 
+layer security)
+
+cryptographic protocol used for secure commnication over 
+the internet 
+
+ensures CIA
+
+Common themes 
+
+    peer negotiation for algorithm support
+        client and server agree on which cryptographic 
+        algorithms to use 
+
+    public key encryption for key exchange
+        Establishes a shared session key using the server's 
+        public key.
+
+    symmetric key encryption for data
+        uses faster symmetric encryption to protect 
+        actual communication
+    
+
+TLS/SSL handshake
+
+    client -> server 
+
+        a list of cipher -> ciphers : [AES, RSA, ECDHE]
+
+        a random number for uniqueness -> nonce : 12345
+
+    server -> client
+
+        chosen cipher : RSA-AES
+        for session uniqueness -> nonce : 67890 
+        its digital certificate (contains the server's 
+        public key and is signed by a trusted certificate
+        authority (CA)) -> certificate : signed by let's encrypting
+
+    key exchange 
+
+        client generate a pre-master secret(random value)
+        and encrypts it using the server's public key from
+        certificate
+
+        client -> server : sends the encrypted pre-master
+        secret 
+
+        ex. Encrypted pre-master secret = 
+                RSA(server's public key, pre-master secret);
+
+    
+    handshake completion : 
+        
+        both verify handshak message's integrity using a 
+        hash of all prior messages(proof no temporing 
+        occured)
+
+        they exchange confirmation message encrypted 
+        with the session key
+
+        communication shifts to symmetric encryption for
+        speed
+
+        client -> server : {handshake hash} session key
+        server -> client : {handshake hash} session key
+
+
+TLS/SSL components : 
+
+    session key : a shared symmetric key derived during 
+    handshake used for encryption communication
+
+    certificate : proves the server's authenticity 
+    verified using the CA's public key.
+
+common attack in TLS/SSL
+
+    replay attack : 
+        
+        p : attacker intercepts and reuses old message 
+        to mimic a valid session
+
+        d : nonces and timestamps in the handshakes 
+        prevent reuse of old message
+
+    version rollback attack : 
+
+        p : forces the client ans server to use older, 
+        weaker protocol versions
+
+        d : modern TLS versions mandate specific version 
+        negotiation to avoid downgrades
+
+
+IDS (intrusion detection system) and IPS(intrusion prevention 
+system)
+
+    IDS : system that monitors network traffic  
+        to detect potential security breaches 
+        Provides alerts 
+
+        1. host-based IDS : 
+            monitors activities on a single host or device
+
+            ex. detecting unauthorised file changes on 
+                a server
+                Logging suspicious login attempts on workstation
+
+            techniques : 
+                anomaly detection : 
+                    compares current activity against a baseline
+                    of normal behavior
+                
+                signature detection : 
+                    matches activites against known attack pattern
+                    (Signature)
+
+        2. network based IDS 
+
+            monitors network traffic at stretegic points 
+            to detect malicious activity
+
+            ex. downgrades, traffic with malicious payloads
+
+            Deployment : 
+                inline sensors : actively inspect live traffic
+                passive sensors : observe traffic without 
+                    interering 
+
+    IPS : similar to IDS but goes a step further by 
+        actively blocking detected threats.
+
+        if a SQL injection is detected, the IPS blocks 
+        the malicious request before it reaches the DB.
+        using inline sensors(active sensors)
+
+        Firewall (first line of defense): 
+            
+            cap: 
+                acts as a block point for unauth traffic
+
+                monitors ans logs security events 
+
+                supports NAT and IPSec
+            
+            lim : 
+                cannot stop attacks that bypass it
+
+                limited against inside threats 
+            
+        Packet filtering firewalls : 
+
+            filetrs based on : 
+
+            1. source/destination IP 
+            2. Port number
+            3. protocol 
+
+            ex. allow HTTP but not FTP (http port 80 and 
+            ftp port 21)
+
+            weakness : 
+                IP spoofing : attackers forge sources 
+                IPs to bypass filetrs
+
+                misconfiguration : can lead to unintentional
+                security holes
+
+
+    Intruders : 
+
+        hostile trespass : a hacker gained access to 
+        steal data in unauthorized system.
+
+        user trespass : an employee accessing files they
+        are not authorizes to view
+
+        software trespass : malware like viruse, worms, 
+        trojan horses (a program looks legitimate but
+        stealing the credentials )
+
+security intrusion and detection :  
+
+    security intrusion : gains access by brut-forcing
+
+    intrusion detection : repeated failed login attempts.
+
+
+
+
+Malware : malicious software to cause harm, steal data 
+    or exploit resources.
+
+    ex. ransomeware program encrypts the file on your system 
+    and demands money to decrypt it
+
+virus : reproduces by attaching itself to legitimate 
+    programs or files 
+
+    ex. a macro virus spreads in word doc when it opened
+
+Bot : program that perform automated tasks like downgrades
+    ex. bot sends spam emails
+
+Trojan : malicious software looks disguised as legitimate 
+    program.
+
+    ex. a game installer secretely installs spyware
+
+Botnet : network of compromised computers controlled 
+    remotely 
+
+    ex. mirai botnet used for DDoS attacks
+
+
+components of malware : 
+
+    exploit + payloads and vulnerability
+
+    a burgler entered in a house through an unlocked
+    door to steal money 
+
+    unlocked door : vulnerability
+    burgler : payload 
+    method of opening the door : exploit
+
+
+viruses : 
+
+    dormate phase : v is inactive and undetectable 
+        program hidden in a file 
+
+    propogation : v replicates by infecting files
+        infects all other files 
+
+    triggering : activates based on conditions
+        activate on 1 april
+
+    execution : performs malicious actions 
+        deleting files on system
+    
+    ex. 
+        boot virus : start at boot
+        macro virus : word macro sends infected malicious
+        polymorphic v : changes code to evade detection
+        stealth v : makes infected files appear normal
+    
+Malware propogation :
+
+    worms 
+        worms spread autonomously over network without 
+        needing to attach to files or programs
+
+    charecteristics : 
+        can overload network with traffic 
+        propogates through email, file-sharing or remote login
+    
+    phases : 
+        dormate 
+        propogation
+        triggering
+        execution 
+
+Malware detection methods : 
+
+    signature detection
+        adv : effective against known threats 
+        dis : cannot detect new 
+
+    change detection
+        detects changes 
+        adv : can detect unknown malware
+        dis : many false positive requires heavy monitoring 
+
+    anomaly detection 
+        detects unusual behavior 
+        
+        adv : may detect unknown malware
+        dis : intruders can mak abnormal behavior 
+        to appear normal
+
+Counter measures : 
+
+    keep software updated
+    use antivirus 
+    monitor network ans file activity for anomalies
+
+
+Advanced Malware techniques
+
+    encrypted malware : 
+        uses encryption to hide its content 
+        detecton : look for decryption module
+
+    polymorphic malware : 
+        changes code to avoid detection
+        detection : emulation or behavior analysis
+
+    metamorphic malware : 
+        completely rewrites its code while retaining 
+        functionality
+        detection : difficult , relies on sophesticated 
+        heuristics 
+
+
+Web application 
+
+    runs on servers , interact with databases/third-party
+    services
+
+    shopping carts, banking apps
+
+
+common vulnerability :  
+
+    inadequate input validation 
+        
+        cross-site request forgery (CSRF) :
+            
+            exploits trust btw a site and use's browser
+
+            ex. changing a bank password or performing 
+            unauthorised transaction
+
+            prevention : 
+                use anti-CSRF tokens
+                limit session cookie lifespan
+                validate HTTP referer headers 
+                use CSRF filters 
+                enforce stricter authentication
+
+        cross site scripting (XSS/CSS) :
+            
+            exploits trust btw user and site 
+
+            non-persistent(reflacted) : malicious data
+            reflected back immediately.
+
+            persistent(stored) : data stored and displayed
+            on other user's pages.
+        
+            prevention : 
+                input validation and output senitization
+                escape HTML characters(< becomes &lt;, etc)
+                implement a content security policy(CSP)
+                avoid directly inserting user-generated 
+                    content into HTML or scripts 
+        
+        SQL injection
+            exploits SQL syntex to alter database queries
+
+            attackers can :     
+                retrieve unauth data 
+                insert, update, delete records
+                drop database tables
+            
+            prevention : 
+                use parameterised queries or 
+                    prepared statement
+                limit database privileges (least privileges
+                    principle) like "drop table
+                encrypt sensitive data
+                harden database server 
+                sanitize user input
+                
+            general mitigation techniques : 
+                validate all input data early 
+                limit error messages to avoid schema leaks
+                regularly patch and update software.
+                use web application firewall (WAF).
+            
+
+
+
+        SQL injection : 
+            alters SQL queries to manipulate database 
+        
+    broken session management : 
+        leads to session hijacking and theft 
+    
+    insecure storage : 
+        storing sensitve data without encryption 
+
+
+
+Windows Security Architecture :
+    
+    windows security is built on layers of components 
+        access control 
+        user authenication 
+        system integrity
+
+    
+    security reference monitor 
+        role : 
+            performs access checks
+            manage priviliges 
+            Logs security relevent events 
+
+            ex. SRM verifies the user's token before giving 
+            permission if not then denied
+    
+    local security authority : 
+        role : 
+            enforces local security policies 
+
+        process : lsass.exe runs in user mode
+
+        example : when you change your password, LSA checks 
+        the new password against the local security policy 
+
+    security account manager :
+        role : 
+            stores credential for local accounts, grps
+
+        passwords : 
+            stored as hashed values 
+        
+        ex. during a local login, windows checks the credential
+        against SAM(security account manager) database.
+
+    active directory : 
+        role : provides centralised authentication, authorization
+        in a domain environment
+
+        ex. when a user log into their domain acc.
+        credential are sent securely to the AD domain controller
+        for verification a token is return upon success
+
+    window login ex.
+
+        1 admin creates a user account uname : john 
+            and pass : 123
+        2 window assigns a unique SID : s-1-5-21
+
+        3 john logs in and 
+
+            login credential are checked (local/SAM or AD)
+
+            upon successful login, windows generates a token 
+            containing
+                SID 
+                grp memberships
+                perivileges
+
+ 
+access control lists : 
+    
+    discretionary ACL(DACL)
+
+        purpose : allow/denies access to resources
+        
+        ex. a file owned by alice allows bob read and write 
+        permissions but denies eve access
+
+    system ACL(access control lists) 
+
+        purpose : used for auditing access 
+            ex. logging when a file is accessed or modified 
+        
+        ex. server logs all write attempts to sensitive
+        fiancial docs
+
+    
+windows integrity control(WIC) : define integrity
+
+    purpose : assigns integrity levels to processes and 
+    files to prevent untrusted processes from affecting     
+    trusted resources
+
+    integrity levels : 
+
+        high : admin
+        medium : standard user access
+        low : limited access
+    
+    ex. a web browser running with low integrity cannot 
+    modify system files, even if compromised by malware
+
+
+Mandatory integrity control (MIC) : manages integrity 
+
+    concept :
+        ensures lower-integrity processes cannot interfere
+        with higher-integrity processes or data.
+
+        ex. 
+            a low-integrity process canot modify or access
+            files created by a medium-integrity user
+    
+user account control (UAC)
+
+    purpose : 
+        prompts users before allowing changes to sensitive 
+        settings or resources
+
+    ex. 
+        1 when changing system settings UAC shows 
+        "windows needs your permission to continue"
+        
+        2 when installing software UAC shows 
+        "a program needs your permission to continue"
+
+Linux security model 
+
+    linux relies on robust file permission, owner ship 
+    and access control policies for security
+
+
+
+Risk Management : 
+
+    risk mangement is a process of identifying, aassseing 
+    and mitigating security risks within an organization
+    this involves evaluating threats, vulnerabilities 
+    and the potential impact on assets and systems then 
+    implementing measures to address them.
+
+
+    Security risk assessment : 
+
+        primary approches to assess security risks
+        based on organization's resources and risk profile
+
+        Baseline approach :
+            uses : industry best practices to implement 
+                safeguards against common threats
+        
+            pros : simple, cheap and easy to replicate 
+
+            cons : does not consider specific organization needs
+
+            ex. using a checklist provided by security organizations
+
+        informal approach : 
+            relies on the knowledge and expertise of 
+            analysts to conduct a pragmatic risk analysis
+
+            pros : tailored to the organization's needs
+
+            cons : some risks may be missed or assesed incorrectly 
+
+            ex. analyst suggests patching outdated software without 
+            formal tools
+
+        formal approach :
+            detailed and systematic
+
+            pros : thorough and reliable 
+
+            cons : expensive and time-consuming 
+
+            ex. formal risk assessment using tools like 
+            NIST standards in large org.
+
+        combined approach : 
+            combines all 3 of them for better coverage
+
+            ex. a mid-sized org. applies baseline measures
+            across all systems, performs informal analysis
+            for medium-priority assets, and conducts formal 
+            assessment for critical systems
+        
+
+    security Awareness :    
+
+        ensures employees understand security risks and 
+        responsibilities
+
+        ex. regular training sessions about phising emails 
+        help employees identify and avoid such threats 
+
+    organizational security policy :
+
+        defines acceptable use of system and data
+
+        defines security control like requiring strong password
+
+        ex. a policy states that employess must not share 
+        their work passwords and must use multi-factor 
+        authentication for remote access.
+
+    security policy lifecycle : 
+
+        security policies evolve through continuous review 
+        and updates to address emerging threats and 
+        organizational changes.
+    
+    cybersecurity Framework(NIST) : 
+
+        functionality
+
+        1. identify : recognize assets needing protection 
+            ex. list all critical servers, devices and 
+            sensitive customer data.
+
+        2. protect : implement safeguards
+            ex. install firewall and ensure employees 
+            follows a strong password policy 
+        
+        3. detect : identify incidents when they occured    
+            ex. use intrusion detection system to monitor 
+            network traffic
+        
+        4. respond : take action to minimize impact 
+            ex. disconnect affected systems and notify the 
+            incident response team
+        
+        5. recover : restore normal operations 
+            ex. use backups to recover lost data after a 
+            ransomeware attack 
+
+    access control (ex. protect function)
+
+        current state :     
+            
+            basic measures like disabling remote acess accounts
+            after and employee leaves
+        
+        target state: 
+
+            enhanced measures like requiring encrypted VPN 
+            access for remote users and bi-annual acocount 
+            reviews 
+
+    personal security : 
+
+        employees may unintentionally or intentionally harm 
+            security 
+        
+        threats include unauthorised access, data theft or
+            system misuse
+        
+        ex. an employee clicks on a malicious email link,
+        compromising the system
+
+    
+    security measures :     
+
+        screening : 
+            conduct background checks before hiring
+            ex. verify a candidate's criminal records
+    
+        employment agreements : contracts includes 
+            confidentiality clauses and security responsibilities
+            ex. emp must agree not to share trade secrates
+
+        termination : ensure secure exit process 
+            ex. deactivate access cards and retrieve company
+            devices on the last day 
+        
+
+Password management : 
+
+    why password security matters : 
+        pass acts as a first line of defense for user auth. 
+        in online system 
+
+        weak pass can lead to : 
+
+            data breaches 
+
+            dictionary attacks : guessing passwords using 
+                common or precomputed wordlists 
+            
+            credential stuffing : reusing stolen passwords  
+                on other accounts 
+            
+        characteristics of strong passwords : 
+
+            a strong password : is long (12+ chars)
+
+            incluese mix of :
+
+                uppercase & lowercase
+                numbers 
+                special symbols(!,@,#,etc)
+                
+            avoids common patterns such as sqquential numbers
+            or keyboard patterns(qwerty)
+
+            example : 
+                weak pass : password123
+                strong pass : T2h!Strong#Pa$$w@rd 
+        
+        password hashing ans salting 
+
+            hasing : converts a password into a fixed-length
+            value using a hash function 
+                ex. password123 -> s0d9f6sd0f987s6df0s78d
+            
+            salting : a unique random value is added to the 
+            password before hashing to prevent attackers 
+            from matching pre-computed hashes 
+
+                ex. password123 + salt(XYZ) -> hash(XYZpassword123)
+        
+        memorizing strong password 
+
+            challenge   
+                strong passwords are harder to remember especially 
+                when managing multiple accounts
+            
+            solution 
+                
+                human-generated strong pass: 
+
+                    i have 2 pets : jimi and joni -> ih2p:j&j
+                
+                using pass generator :
+
+                    345lh$#3v#$v3Jwv$V^(v!2k)
+                
+                pass managers :
+
+                    software tools that store and manage all your
+                    pass in an encrypted format.
+
+                    they often include features like autofill
+
+                        popular tools : 
+
+                            LastPass
+                            Dashlane
+                            Keeper
+
+                    benefits : 
+
+                        1> memorize pass
+                        2> autofill 
+                        3> secure generation of storng pass
+                    
+        avoiding common attacks 
+
+            public dictionary and dictionary attacks
+
+                using long list of known passwords 
+                
+                prevention : 
+                    use unique, complex pass 
+                    enforce account lockouts after multiple 
+                        failed attempts 
+
+            credential reuse :
+                reusing passwords across accounts increases
+                risks. if one pass is breached, attackers can try
+                the same on other accounts 
+
+                solution : use a diff pass for each acc. 
+                    managed via pass manager
+        
+        research problems and future trends 
+
+            challenges : 
+
+                balancing usability with security : 
+                
+                    strong pass are hard to remember 
+                    weak pass are easier to remember but highly 
+                    vulnerable 
+                
+                educating users to adopt secure practices 
+                
+                addressing the human limitation of memorizing 
+                    multiple pass 
+                
+            emarging trends 
+
+                biometric auth.
+                
+                multi-factor auth
+
+                passwordless system
+
+
+        practical example of storng password policy 
+
+            enforcing rules
+
+            storing pas securely 
+                salt + hash using bcrypt
+
+            regularly educating users to avoid 
+                weak habits like sharing pass 
+
+
+
+
+Bella Padula model 
+    
+    emphasize in confidentiality of the data 
+
+
+    simple security 
+    1> no read up : subject can only read the object when 
+                    the clearance level of subject is 
+                    equal or higher then object 
+
+                    because if the subject has lower clearance 
+                    then it can leak the info at lower clearance
+                    level
+
+        L(s) >= L(o)
+
+    star property 
+    2> no write down : subject can only write the object when 
+                        the clearance level of subject is equal
+                        or less than clearance level of object
+
+                        because if the subject with higher 
+                        level of clearance writing the object
+                        can leak the info of higher level 
+                        to lower level 
+        L(s) <= L(o) 
+
+
+
+Integrity : trustworthiness of data or resources 
+
+    main goals : 
+        prevent unauth users from making modification 
+        prevent auth users from making improper or unauth 
+            midification 
+        maintain internal and external consistency of data 
+
+    defined by labels , consists of 2 parts : 
+
+        classification : 
+            3 elem : 
+                crucial 
+                v imp 
+                imp 
+
+
+        set of categories :
+
+            x = {delhi, london, new york}
+            y = {delhi, london}
+
+            in this case x >= y (x dominates y)
+
+        integrity levels : 
+
+            L = (c, s)
+                l : level   
+                c : classification
+                s : set of categories 
+
+            
+
+
+    
+
+Biba model :
+
+    goal : prevent contamination > from dirty to clean 
+
+    security model 
+    ensure integrity of data in a system
+    used where it is critical to prevent unauthorised modification
+        of information
+    
+    key concepts : 
+        high integrity : highly trustworthy/reliable data
+        low integrity : less trustworthy/reliable data
+    ensuring that high-integrity data cannot corrupted by 
+    lower-integrity entities
+
+    access modes : 
+        modify : write mode 
+        observe : read mode 
+        invoke : communicate with each other 
+        execute : exe mode 
+
+    Core principle :
+
+        simple integrity property (no write up) :
+            a subject at a lower integity level cannot write 
+            to an object at a higher integrity level 
+
+            this prevent less trustworthy entities from 
+            corrupting more trustworthy data.
+
+            ex. a user with low trustworthiness (external 
+            contractor) cannot write or modify data in a 
+            highly trusted system (ex. critical financial 
+            records )
+        
+        star(*) integrity property (no read down) : 
+            a subject at a higher integrity level cannot 
+            read an object at a lower integrity level.
+
+            ensures that highly trusted entities do not 
+            get "corrupted" by interacting with less 
+            trustworthy data .
+        
+            ex. system admin cannot read unverified Logs
+            from a lower integrity system to prevent 
+            contamination of trusted decision-making 
+
+        invocation property : 
+            a subject at a lower integrity level cannot 
+            invoke (call upon) a subject or process at 
+            a higher integrity level.
+
+            ex. low-trust app cannot request actions or 
+            service from a high-trust app to ensure system 
+            integrity
+
+mandat pol : 
+
+    strict inte policy 
+       
+        1 simple inte condition : 
+            no read down
+        2. * property   
+            no write up 
+        3. invocation prop 
+            s1 belongs to S can invoke s2 belongs to S
+            and only if i(s2) <= i(s1)
+
+
+    low-watermark policy
+
+        relaxed no read down 
+        but not write up 
+
+        a subject will drop it's integrity level to lower 
+        if it wants to read the lower inte object 
+
+        but then it cant read higher inte level object 
+        since it's dropped the inte. level 
+
+        rules : 
+
+            integrity star prop : 
+                no write up 
+            
+            simple condition : 
+                no read down 
+            
+            invocation prop : 
+                a subject can only invock other subject
+                if and only if it's integrity level is higher 
+
+
+RBAC (role based access control) 
+    
+    role dictates the access control not individual 
+
+    role : collection of permissions 
+
+
+discretionary pol : 
+
+    access control lists
+    object hierarchy 
+
+
+
+
+seccurity model : 
+    
+    discretionary access control : 
+        individual sets access control mechanism    
+        identity based access control 
+        
+        user can pass their privilages to other user
+        while the granting and revocation is still managed 
+        by admin policy
+
+
+    mandatory access control : 
+        system mechanism controls access to object 
+            individual cant 
+        
+        access control based on security labeling system 
+
+        user -> security clearance
+        resources -> security label 
+
+        used where confidentiality is critical 
+
+
+digital signature : 
+
+        asymmetric key cryptography is used 
+
+        authenication :
+        integrity : 
+        non-repudiation : 
+
+
+        message -> hash -> message digest -> encrypt -> using -> sender private key 
+        signature = Encrypt (Hash(Message), private key)
+
+MAC : 
+
+    auth : 
+    integrity : 
+
+    used symmetric key cryptography 
+
+    both party have symmetric key (shared secret key)
+
+    MAC = Hash(Message + Secret Key)
+
+
+

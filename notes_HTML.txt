@@ -1,0 +1,12 @@
+element = <p> 
+attribute = <img src="img.png" /> (here src is an attribute)
+
+selectors in CSS 
+
+5 types : 
+
+    element selector 
+    id selector
+    class selector
+    attribute selector 
+    pseudo-class selector (ex. a:hover selects <a> but only when the mouse pointer is hovering over the link)

@@ -1,0 +1,49 @@
+TC (tailwind css) 
+
+    utility-first css framework 
+    provides wide range of untility classes 
+    to style elements directly in ur HTML 
+
+
+utility class 
+
+    each class = single CSS property 
+
+    ex. 
+        text-center = aligns text to center 
+        bg-blue-500 = sets bg to specific shade of blue 
+        p-4 = applies padding on all 4 sides 
+
+Layout utilities 
+
+    container : container 
+
+        sets max-width and horizontal padding for responsive layout 
+
+    
+    Box sizing : box-border, box-content 
+
+        control the box-sizing property 
+    
+    display : block, inline, inline-blockm flex, grid, hidden 
+
+        controls the display property 
+    
+    floats : float-left, float-right, float-none
+
+        controls float property 
+
+    clear : clear-right, clear-both, clear-none    
+
+        controls the clear property 
+    
+flexbox utilities 
+
+    flex direction : flex-row, flex-row-reverse, flex-col, flex-col-reverse 
+        controls wether flex items wrap or not 
+    
+    flex wrap 
+
+    align items 
+
+    jus

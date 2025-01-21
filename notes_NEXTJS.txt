@@ -1,0 +1,16 @@
+next js uses file based routing 
+    so you dont have to configure the routing manually
+    next js will do it for you 
+
+
+next js uses conventions instead of configurations
+
+
+Anchor tag in nextJS redownloads all the required files 
+    from the server, but 
+
+Link tag only redownload the needed file when we click on 
+    the link button 
+
+
+

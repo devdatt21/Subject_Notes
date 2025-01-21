@@ -1,0 +1,138 @@
+mutation testing : 
+
+    Structural testing method 
+    we use structure of code to guide the test process 
+    
+    aimed at assessing/improving the adequacy of test suites 
+    and estimating the number of faults present in systems 
+    under test 
+
+    mutation : a small change in program 
+
+    program     : p
+    test suit   : t
+
+    p1,p2, ..pn is varient of p when we apply mutation 
+    to p, every time a single mutation operation is applied 
+
+    run test suit t on each mutant of p 
+    t is said to kill mutant p if it detects error
+
+    if we kill k out of n mutants the adequacy of t is masured 
+    by the quotient k = n. 
+
+    t is mutation adequate if k = n.
+
+    mutation score = killed mutants/total mutants 
+
+    residual defects density(RDD) : usually measured in 
+        defects per 1000 line of code 
+
+    types of mutants : 
+    
+    still born mutants : 
+        syntectically incorrect, killed by compiler 
+            ex. x = a ++ b
+
+    trivial mutants : 
+        killed by almost any test case 
+        
+        
+        always acts in the same behavior as the original 
+        program 
+        (functionally identical, syntectically not)
+        ex. x = a + b and x = a - (-b)
+
+    none of them are interesting 
+
+    interesting mutants will behave differently to identify 
+        them : 
+
+        in mutation testing : 
+
+            1> a mutant remains live either : 
+                a> bcus it is equivalent mutant 
+                b> test set is inadequate to kill it 
+
+            2> in the latter case, the test data need to 
+                be augmented (by adding one or more new
+                test cases) to kill the live mutant 
+
+            3> for the automated generation of mutants we 
+                use "mutation operators", that is predefined
+                program modification rules (i. e. corres
+                ponding to a fault model)
+
+            4>  ex. next 
+
+    kinds of mutants : 
+
+        value mutations :   
+            involves the changing value of constant 
+            or parameters 
+
+        decision mutations :     
+
+        statement mutation : 
+
+
+
+
+Regression testing : 
+
+    refers to the portion of the test cycle in which 
+    a program is tested to ensure that changes do not 
+    affect features that are not supposed to be affected 
+
+    corrective regression testing 
+        correction added to the previous version 
+
+    progressive regression testing 
+        features added to the previous version 
+
+
+
+    reg. test process :     
+
+        test revalidation/selection/minimization/prioritization 
+            |
+        test setup
+            |
+        test execution 
+            |
+        output comparison 
+            |
+        fault mitigation 
+    
+    just re-execute previous tests
+
+    revalidation : which tests remain valid for p'
+
+    selection : identification of tests that traverse 
+                the modified portions in p'
+        
+    minimization : removel of tests that are seemingly 
+                redundant with respect to some criteria 
+            
+    prioritization : referes to the task of prioritizing 
+                    tests based on certain criteria 
+    
+
+Types of Data Flow Anomalies:
+
+ur anomaly 
+
+du anomaly
+
+dd anomaly
+
+Def-use pairs (DU pairs): This refers to the relationship 
+between where a variable is defined and where it is used.
+
+Def-clear path: The path between a definition and a use of a 
+variable without any intervening definitions that "clear" the 
+previous definition.    
+
+
+DU Path: A specific path in the code where a variable is
+defined and then used.

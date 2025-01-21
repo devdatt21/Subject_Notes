@@ -1,0 +1,897 @@
+19-10-2024
+
+what is normalization and why it is imp in database
+
+making a table/database duplicasy free is called normalization means when a table have multiple values in one 
+of the fields and making a saperate table for that field linking it with primary key is called 1NF
+
+improvements : normalization is the process of organizing the database to reduce redundancy and improve data
+integrity, it involves process of dividing large database into smaller ones and defining relationships between 
+them using foreign key. this prevents anomalies during inserion, deletion and update
+
+1NF - eliminate duplicate values, each field should only contain indivisible atomic value
+
+
+ACID
+
+A - atomicity > when a transaction starts it should be completed or not started at all
+
+C - consistency > when a transaction is successful it should be reflacted in all other linked tables
+
+I - isolation > ensure that each transaction occurs independantly and intermidiate state of one transaction should
+be invisible to other transaction
+
+D - durability > when a transaction is successful it should persist in database even in the case of database fail.
+
+No-sql is document based database, it has key-value pairs in database
+sql is a row-column format database when data is stored in relational format
+
+
+improvement : 
+indexing creates a datastructure (a lookup table) that allows the DBMS to retrive rows more efficiently by reducing 
+the number of rows it has to scan, it's based on one or more columns of the table making searches faster
+
+//simple indexing on employee names
+CREATE INDEX idx_emp_names ON employees(name);
+
+creating index on a table makes rowID for each record that refers to the whole record in the database
+which can be easier to find a record in a large database
+also we can't use empId as rowId because empID can be very big and can use little more storage in 
+DB, using index we can make efficient record retrivel.
+
+
+
+
+join is used to aggregate 2 or more tables in SQL database 
+1. inner join > takes all the row are matching the condition in both the table and all other rows
+2. outer join > takes only matching rows
+3. left join > takes all rows of left side table and only matching rows of right table if there's no match then
+		null value is returned for columns of that table
+4. right join > takes all row of right side table and only matching rows of left table if there's no match then
+		null value is returned for columns of that table
+
+
+20-10-24
+
+-c = bytes
+>  = redirection option
+-w = word
+-l = lines
+-n = n lines
+-f = follow
+-k = keep
+-d = decompress
+-s = soft link
+-i = inode, iterative mode, interacive, case-insensitive
+-type = type of file f : file , d : directory , l : symbolic links
+-v = verbose(description), invert(grep -i = lines that do not match the pattern)
+-r = recurcive, reverse(for sort)
+-f = force
+-u = update
+-m = number of chars
+-L = longest line of the file
+wc = word count
+grep = Global Regular Expression Print 
+-E = extended ( grep -E "pattern1|pattern2" filename)
+^ = start of the line
+$ = end of the line
+. = any single char
+* = if matches zero or more occurences of previous char
+sort -u filename.txt = remove duplicates
+uniq = eliminates next duplicate lines
+diff -u file1.txt file2.txt  (-i = ignore case diff, -w = ignore all the white space, -q = only show wether difference or not
+
+
+
+21-10-24
+
+natural join and inner join are same the diff is only in natural we dont have to specify in which column we 
+want to make the join operation
+
+full outer join used to get all the tuples regardless of mathching with other rows, return null where unmatched
+
+22-10-24
+
+closure use case
+
+encapsulation -> datahiding
+
+function f1(){
+    let num=0;
+
+    return function(){
+        num++;
+        console.log(num);
+    }
+}
+
+let func0 = f1();
+
+func0(); // 1
+func0(); // 2
+
+let func1 = f1();
+
+func1(); // 1
+func1(); // 2
+func1(); // 3
+
+
+23-10-24
+
+SQL 
+
+LIKE 'Char%' or LIKE 'Char_' for matching certain words in records
+MATCH(name) AGAINST => is same as LIKE but used only in indexed table
+Similar => CONTAINS(), REGEXP '^Cha'
+
+how to swap to fields 
+
+UPDATE users
+SET (f_name, l_name ) = (l_name, f_name)  
+
+or
+
+UPDATE users 
+SET f_name = l_name, l_name = f_name;
+
+
+DSA Tree
+
+if you encounter a problem of tree where you have to 
+sum element level wise then you have to do BFS with the help of 
+queue 
+
+in a problem with suming a level and sutracting the sum from all the other element you 
+will require a buffer vector of nodes wich will contain parent nodes of the level you have sum of.
+
+in short q pe while lagaya q pop karke buffer me dala aur us node ke sare children q me daal diye
+
+uske baad ussi while loop me buffer pe for loop laga ke buffer ke sare elements ke children ko 
+sum mese substract karke jo bhi bacha wo uske val me daal dene ka simple.
+
+
+MONGO DB 
+
+Indexing in mongo DB it used in sharding in Mongo DB since it allows for horizontal scaling 
+when you are appliying sharding in mongodb you first have to choose a shard key to divide data 
+into multiple shards 
+
+shards are full dataset means a subset of the database which can be run on different server to ensure 
+availability and reliability
+
+to choose shard key you have to choose a field that can divide the data in even manner
+
+like choosing city will be little inefficient choice as more records can belong a to specific city
+and it will result in uneven distrubition of data
+
+choosing empid as a shard key will make partition of data in even manner as it is unique for all the 
+records
+
+also you can make "hashbased sharding" in which you can make hase for all the records and based on that make shards
+
+also you can do "range based sharding" ex. age >= 15 in one shard age <=15 in other shard
+
+we should ensure there are no bottlenecks while creating shards
+
+CREATE INDEX idx_emp_name ON employees(name);
+
+   
+
+why I used "mongoDB" for social media application because of 5 reasons
+
+1. scalability (horizonatal scaling)
+2. flexible schema
+3. binary JSON (nested document based data storage)
+4. availability (built in replication and auto-failover) it 3 server 1 primary 2 secondary, mongo's mechanism 
+	constantly checks for primary server if it fails nearest secondary server will take it's place all 
+	the request diverted to secondary server and it becomes primary until the earlier primary server 
+	is fixed
+5. geo-spatial - native support for storing location based data
+6. rapid development - allows developer to iterate quickly 
+
+queries
+		// first arg with condition   // second arg with field and value to add in record
+db.users.updateOne({"name" : "john doe"}, {$set :{"nickname" : "johnny"}}};	
+
+db.user.updateMany()  //updates all the records with the args
+
+	//age greater than 18    // include name and age, exclude _id
+db.users.find({"age":{$gt : 18} }, {"name" : 1, "age" : 1 , "_id" : 0 }) 
+
+//find with or condition
+
+db.users.find({
+	$or :[
+		{"age": {$gt:30}},
+		{"name":"john doe"}
+	]
+})
+
+
+"or" can be "and"
+
+//returns all records where nickname exists 
+db.users.find({"nickname" : {$exists : "true" }});
+
+
+// returns all records with reading in hobbies
+db.users.find({"hobbies" : {$in :["reading"]}});
+
+
+24-10-24
+
+
+"namaste javascript"
+
+When we start js program a Execution context is created
+
+functions are fully hoisted in js means full body of the function goes to the top of the code,
+by which you can access the function before it's definition
+
+but incase of variable with var, var only hoist the declaration and not assignment
+if you try to access the variable before it's definitio  it result undefined when the line of it's assignment
+comes it shows the value of it
+
+
+if you declare 2 variables with same name it will not execute the program upfront as it has parsed the code
+and in execution context it has found out that 2 variables are of same name which is a syntectical error
+
+
+let a=10;
+
+function x(){
+    var a=10; //here a has function scope so no problem with let a=10; 	//it has it's own memory space
+}
+
+
+"ILLEGLE SHAWDOING"
+
+
+let b=10;
+
+{
+    var b=20;  //here b ignores the block scope and hoist to the top of the code and make trouble with let b=10;
+}
+
+
+"CLOUSERS"
+
+function along with it's lexcial scope bundled together forms a closure
+
+use of it
+
+	module design patterns
+	currying
+	functions like once
+	memoize
+	maintaining state in async world
+	setTimeout functions
+	Iterators
+	etc..
+
+
+26-10-24
+
+innerText : renders html,css also while returning the text, like it wont return hidden text by html tag hidden
+ 
+textContent : do not render css while returning the text 
+
+
+when we do "npm i" node will install deps from package-lock.json first as it has the exact version of the 
+dependencies then it goes to package.json to install the dependencies where it has range of of dependencies 
+and not an exact version
+
+
+1. Guess the output: I will try to solve as many of these as possible. The best way to find questions for these is using ChatGPT. Just mention the topic and ask it to generate easy/medium/hard difficulty questions and practice.
+
+2. Writing examples and code snippets for these topics:
+*** Call, apply, bind
+*** Flattening an array
+*** Higher order functions
+*** Function currying easy and hard difficulty questions
+
+3. Writing. Polyfills for below methods
+*** Promise
+*** Promises.all
+*** Array methods like map, foreach, reduce, flat
+*** Basic string methods like split, join, substring, length
+
+4. Understanding scenario driven questions
+*** User authentication and authorisation flow.
+*** How to load websites quickly using proper management of cache
+*** Sharing data securely between client and server and between tabs.
+*** Security related questions especially around banking apps.
+*** Resource optimisation
+
+
+function statement aka function declaration
+	
+	function x(){
+		console.log("hello this is function statement");
+	}
+	
+	function Statements are hoisted
+	while...
+	
+function expression
+	
+	const x = function(){
+		
+		console.log("hello this is function expression");
+		
+	}
+	
+	function expression are not...
+	expression resolved when the line of execution reaches to const x line..
+	
+named functions
+
+	const x = function xyz(){
+		console.log("named function called");
+	}
+	
+	here function is named but given to a variable,
+	in this case when x() is called as a function it works as a function call but
+	when you call xyz() it will throw a reference error as xyz() is inside x 
+	
+	so xyz() can be used in the function but not outside the function
+	
+	
+First class functions
+	
+	ability of functions to use it as values like argument to a function
+	
+
+Callback function
+	
+	function are first class citizen in JS.
+	javascript is a synchronous single threaded language.
+	
+	
+Normal	 Function
+	
+	it have built-in arguments method
+	
+	function showArgs() {
+		console.log(arguments);
+	}
+
+	showArgs(1, 2, 3); // Logs: [1, 2, 3]
+
+Arrow Fucntion 
+
+	it dont have in built arguments method
+	
+	function showArgs = (...args) => {
+		console.log(args);
+	}
+	
+	showArgs(1,2,3);
+	
+this
+	
+	value of this depends on how the function is called
+	
+	if this is in a function it refers to the global object and not the function context
+	
+	
+	here we have used new for making saparate instance but there is no need as we are not using constructor 
+	function
+	
+	and closure have functionality like when it is called it creates separate memory space in heap
+	
+	function createCounter(){
+    let count=0;
+
+		function increment(){
+			return ++count;
+		}
+
+		return increment;
+	}
+
+	const counter1 = new createCounter();
+	const counter2 = new createCounter(); 
+
+	console.log(counter1());
+	console.log(counter2());
+	console.log(counter1());
+	
+	
+	this is correct way : 
+	
+	
+	function createCounter(){
+    
+	let count=0;
+
+		function increment(){
+			return ++count;
+		}
+
+		return increment;
+	}
+
+	const counter1 = new createCounter();
+	const counter2 = new createCounter(); 
+
+	console.log(counter1());
+	console.log(counter2());
+	console.log(counter1());
+
+
+	
+Event loop
+	
+	when the callback function is called it goes into webapi zone of browser and when it resolves it goes 
+	into callback queue or micro task queue
+	
+	micro task queue is only used when there is promise or mutatation observer in webAPI zone
+	
+	event loop is part of JS runtime environment
+	
+JIT (just in time) compiler 
+	
+	is used to compile and make machine code of frequenlty used code
+	
+	it also optimise the code and converts it into machine code
+	
+	the converted machine code is replaced by byte code while interpretation by ignition in v8
+	
+	in case of in stability the JS engine can deoptimize the code or replace again with bytecode 
+	for stability
+	
+
+Inlining for compilation
+	
+	when we replace the function call with actual code while compilation
+	
+	used in small helper function, avoids recursive function
+	
+
+mark and sweep algorithm for garbage collection
+
+	first it marks the root object
+	
+	then it marks the connected object through root object
+	
+	after marking which ever object is not referenced through any other object or root object
+	will be garbage collected.
+	
+copy elision optimazation technique for compilers 
+
+	where it eliminates unneccesary copying or moving of objects
+	
+Inline caching
+	
+	when we call a function it performs a full look up in the memory for function type and code
+	
+	1st time miss (stores the information(caches)) , second time it retrieves directly from the cache memory
+	
+	
+Higher order function & callback function
+
+	giving a function(callback function) to a function as argument is called a higher order function it also can
+	return a function
+
+Polyfills
+
+	we can add methods to Array.prototype to use the method where ever we want, this is called as pollyfills which means adding method
+	in older version of browser to make it do things that is done by letest javascript		
+
+
+"higer order function used in JS"
+
+
+map() : returns new modified version of given array
+
+using map()
+
+	function m(x)
+	{
+		return x*2;
+	}
+
+	const arr = [1,2,3,4]
+
+	const newArr = arr.map(m); //returns : [2,4,6,8]
+
+alternate (using map()): 
+	
+	const arr = [1,2,3,4]
+	
+	const newArr = arr.map((x) => x*2);  // returns [ 2,4,6,8]
+
+
+
+filter() : also returns new filtered array
+
+using filter()
+	
+	function f(x){
+		return x > 2;
+	}
+	
+	const arr = [1,2,3,4]
+	
+	const newArr = arr.filter(f); // returns : [3,4]
+	
+using filter() (alternate) : 
+
+	const newArr = arr.filter((x) => x > 2); // returns : [3,4]
+			
+
+
+reduce() : do not return any new array, because it just accumulates the array for like sum, finding max-min, multiply, etc.
+
+
+not using reduce: 
+
+
+	const arr = [1,2,3,4,5]
+	
+	function r(x){
+		
+		const sum=0;
+		
+		for(int i=0;i<x.size;i++)
+		{
+			sum += x[i];
+		}
+		
+		return sum;
+	}
+	
+	const ans = r(arr); // returns : 15
+	
+using reduce :
+
+	const arr=[1,2,3,4,5];
+	
+	const ans = arr.reduce(function (acc, curr){
+		
+		acc += curr;
+		
+		return acc;
+	
+	},0);  //returns : 15
+	
+Another example of reduce, map and filter
+
+	const arr=[1,2,3,4,5];
+	
+	const ans = arr.reduce(function (acc, curr){
+		
+		acc += curr;
+		
+		return acc;
+	
+	},0);
+
+console.log(ans);
+
+const users = [
+    {firstName : "devdatt", age : 90},
+    {firstName : "ram", age : 20},
+    {firstName : "shyam", age : 76},
+    {firstName : "baburao", age : 36},
+];
+
+
+const ans1 = users.filter((x) => {
+    return x.age > 20;
+})
+.map((x) => {
+    return x.firstName;
+
+})
+
+console.log(ans1);
+
+
+
+
+
+
+
+Promise 
+
+	proimse is an object that represents the eventual completion or failure of an asynchronous task/operation.
+	
+	if we want to create an ecommerce website we have to make functions that are dependent on each other
+	
+	like this : 
+	
+	pyramid of doom
+	horizontally growing code
+	callback hell
+	inversion of control
+	complex code for maintaining
+	
+	
+	createOrder(cart, function (orderId){
+		proceedToPayment(orderId, function (paymentInfo){
+			showOrderSummary(paymentInfo, function(){
+				updateWalletBalance();
+			})
+		})
+	})
+	
+	solution of all above problems : use promise and promise chaining
+	
+	
+	createOrder(cart)
+		.then((orderId) => proceedToPayment(orderId))
+		.then((paymentInfo) => showOrderSummary(paymentInfo))
+		.then((paymentInfo) => updateWalletBalance(paymentInfo));
+		
+	
+
+async/await
+
+	the keyword await can only be used in async function // other wise, it will give syntax error
+	
+	async function always returns a promise
+	
+	ex.
+	
+	const pr = new Promise((resolve, reject) => {
+		resolve("this is promise data");
+	});
+	
+	async function getData(){
+		const data = await pr;
+		return data;
+	}
+	
+	const dataPromise = getData();
+	
+	console.log(dataPromise);
+	
+	
+	
+What should be the output
+
+		
+
+	const promise1 = new Promise((_, reject) => { 
+			setTimeout(() => reject(new Error("Promise 1 rejected")), 3000)
+		}
+	);
+	const promise2 = new Promise(resolve => setTimeout(() => resolve("Second Promise"), 2000));
+
+	async function funcPro(){
+		try{
+			console.log("start");
+
+			const val2 = await promise2;
+			console.log("mid");
+			console.log(val2);
+			
+			const val1 = await promise1;
+			console.log(val1);
+
+			console.log("end");
+		}
+		catch(error)
+		{
+			console.log("error" , error);
+		}
+
+
+	}   
+	funcPro();
+	
+	console.log("here is some extra lines of code");
+	
+	
+
+Fetch
+
+	fetch returns a promise which have json value 
+	
+	const api_url = "https://api.github.com/users/akshaymarch7";
+	
+	async function handlePromise(){
+		const data = await fetch(api_url);
+		
+		const jsonvalue = await data.json();
+		
+		console.log(jsonvalue);
+		
+	}
+	
+	handlePromise().catch((err) => console.log(err));
+	
+
+promise.all([p1,p2,p3])
+
+	if one of the promise fails the promise.all() will not wait for any other promise it will instatly throws the error
+	
+promise.allSettled([p1,p2,p3])
+
+	if p1 takes 3 seconds to resolve, p2 takes 1 second to reject and p3 takes 2 seconds to resolve 
+	
+	it will wait for 3 seconds(largest time because it works in parallel) 
+	
+	after waiting for 3 seconds it will return an array with values 
+	
+	in this case : [val1, err2, val3]
+	
+promise.race([p1,p2,p3])
+
+	it will return the result of 1st promise which is settled 
+	
+	ex. p1 = 3 sec, p2 = 5 sec, p3 = 2 sec
+	
+	here p3 will settle first 
+	
+	wether it's resolved or rejected it will be returned
+	
+	it's like a race
+	
+promise.any([p1,p2,p3])
+
+	similar to race 
+	
+	wait for the first success(fulfilled)(resolved)
+	
+	success seeking race
+
+	if all the promise failed then aggregated error is throwned 
+	
+	aggregated error = array for all the erros of all the promises
+		
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+call() 
+	const person = {
+		firstName: 'John',
+		lastName: 'Doe',
+	};
+
+	function greet(greeting) {
+		console.log(`${greeting}, ${this.firstName} ${this.lastName}!`);
+	}
+
+	greet.call(person, "hello"); // first arg is object and after that function arguments 
+	//here we are giving the function the value of this excplicitlys
+
+
+
+apply()
+	
+	apply() method is same as bind but it takes array as an argument
+	
+	const arrNum = [1,2,5,4,9]
+	
+	function mx(){
+		return Math.max.apply(null, arrNum);
+	}
+	
+	console.log(mx()); //output : 9
+	
+bind()
+
+	bind() creates a new(copy) function with this explicilty set to the specified value, 
+	
+	it does not immediatley invoke the function instead it return a copy of the function with 
+	this bound to the specified object
+	
+	ex. 
+	
+	const user = {
+		name : "devdatt",
+	}
+	
+	function getName(){
+		console.log(this.name);
+	}
+	
+	const devdatt = getName.bind(user);
+	
+	console.log(devdatt);
+	
+this
+
+	this keyword in global space will refer to global object
+	
+	if in browser it will refer to window
+
+
+	> explicit binding
+
+	function sayMyName(){
+		console.log(this.name);
+	}
+	const obj = {
+		name : "devdatt",
+	};
+
+	sayMyName.call(obj);
+
+
+	> implicit binding 
+
+	const dontSayMyName = {
+		name : "batman",
+		say : function () {
+			console.log(this.name)
+		},
+	}
+
+	dontSayMyName.say();
+
+
+	order of precedence in figuring out this keyword 
+
+		new biniding
+		explicit binding 
+		implicit binding 
+		default binding 
+
+	
+function currying
+
+	used for 
+		partial application
+		pipelining data flow
+		prebuilt function 
+
+		function sum(a,b,c)
+		{
+			return a+b+c;
+		}
+
+
+		function curry(fn){
+			return function(a){
+				return function(b){
+					
+					return function(c){
+						return fn(a,b,c);
+					}
+				}
+			}
+		}
+
+		const curriedSum = curry(sum);
+
+		const add2 = curriedSum(2);
+		const add3 = add2(3);
+		const add5 = add3(5);
+
+		console.log(add5);
+
+		console.log(curriedSum(1)(2)(3))
+
+
+prototype : 
+
+	used for reusing methods and functions 
+	used for inheritance 
+
+	
+
+
+JWT vs session
+	
+	jwt is stateless dont store user data on server 
+	jwt is scalable as session takes more storage in server
+	session is more secure than jwt if tokes are not stored securely
+
+
+
+React 
+
+	Key Differences Summary
+	
+		Feature	                State	Props
+		Mutability	   Mutable (can be changed by the component)	Immutable (cannot be changed by the component receiving them)
+		Ownership	   Owned and managed by the component itself	Owned and managed by the parent component
+		Purpose	       Used for internal dynamic data	  Used to pass data from parent to child
+		How Set	       useState() or setState()	   Passed as attributes from parent component
+		Re-rendering	Component re-renders when state changes	   Component re-renders when props change
+		Data Flow	    Data is local to the component	     Data flows downwards from parent to child
+

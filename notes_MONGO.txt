@@ -1,0 +1,456 @@
+MongoDB : 
+
+    document oriented 
+    Open source DBMS
+    flexible schemas 
+
+    database : container of mongoDB collections 
+
+    collection : table - grp of mongoDB docs(rows) 
+
+    document : a JSON-like object that represents one instance 
+        of a collection (row in a relational database) - 
+        also used more generally to refer to any set of 
+        key-value pairs 
+
+
+    mongoose : 
+
+        schema : defines structure of a mongoDB doc,
+                with types and validation rules for 
+                each field 
+        
+        Model : provides an interface for interacting 
+                with mongoDB docs based on the schema 
+                allowing CRUD ops 
+            
+
+        ex. 
+            db.users.insertOne({  // or insertMany
+                name:"alice",
+                age : 30,
+                status : "active"
+            })
+
+            db.users.find({ //or findOne
+                status:"active"
+            })
+
+            db.users.updateMany( //or replaceOne or updateOne 
+                {status : "inactive},
+                {$set : {status : "active"}}
+            )
+
+            db.users.deleteOne(  //or deleteMany
+                {name:"charlie}
+            )
+
+
+    Operators 
+
+            //comparison operators 
+        $eq = equal to 
+        $neq = not equal to 
+        $gt = greater than 
+        $gte = grater than or equal to 
+        $lt = less than 
+        $lte = less than or equal to 
+
+        ex. 
+            {age : {$gt : 25 }}
+
+
+
+            //again comparison operator
+        $in = matches any values in an array 
+        $nin = matches none of the values on an array
+        
+        ex. 
+            {siblings : {$in : ['Akash','prakash']}}
+
+
+            //logical operators
+        $and = matches all conditions
+        $or = matches any one 
+        $nor = matches docs that fail all conditions 
+        $not = inverts the condition 
+        
+        ex. 
+            {$or : [{status:active}, {age : {$lt : 30 }}]}
+
+
+
+            //element Operators 
+        $exists = check if the field has a value 
+        $type = selects documents where value of fields 
+                is of specified type 
+        
+        ex. 
+
+            {email : {$exits : true}}
+
+            {age : {$type : Number}}
+        
+            
+            //array operators 
+        $all = matches all values in an array
+        $elemMatch = matches docs where at least one array elem meets all specified conditions
+        $size = matches arrays with the specified number 
+                of elements 
+
+        ex. 
+            {tags : {$all : ["mongodb", "database"]}}
+
+
+            //evaluation operator 
+        $regex = allows pattern matching regular expressions 
+
+        ex.     
+            {"name" : {"$regex" : "^A"}} // matches names starting with "A" 
+            {"name" : {"$regex" : "e$"}} //matches names ending with "e"    
+        
+
+Query with projection 
+
+    projection specifies which fields to include or exclude 
+    in the result 
+
+    use projection to limit the returned data 
+
+    ex. 
+        db.user.find({"age" : {$gt : 25}}, {"name":1, "age":1})
+            //only name and age will be returned    
+
+sorting and limiting results 
+
+    db.user.find().sort({"age":-1}).limit(10)
+        //sorted by age in descending order and 
+        //limits the result to 10
+
+aggregation pipeline 
+
+    agg pipeline consists of one or more stages that 
+    process documents : 
+
+        each stage performs an operating on the input documents 
+
+        documents that are output from a stage are passed to 
+            the next stage 
+
+        an agg pipeline can return results for grps of documents
+            ex. return the total, average, maximum, minimum values 
+
+            {
+                _id : Number,
+                name : String,
+                size : String,
+                price : Number,
+                quanity : Number,
+                date : Date 
+            } 
+
+            calculate total order quantity for medium 
+                pizzas and sort in descending order 
+
+            db.orders.aggregate([
+                //s1 : filter pizza order docs by size
+                {
+                    $match : {size : "medium"}
+                },
+
+                //s2 : grp remaining docs by pizza name 
+                //and calculate total quantity 
+                {
+                    $group : {_id : "$name", totalQuantity : {$sum : $quanity}}
+                },
+
+                //s3 : sort in descending order 
+                {
+                    $sort : {totalQuantity:-1}
+                }
+            ])
+
+
+
+//Find all users with age greater than 30
+db.collection.find({
+  age: {
+    $gt: 30
+  }
+})
+
+
+
+
+2.	Find users aged between 25 and 35 including the bounds
+
+db.collection.find({
+  age: {
+    $gte: 25,
+    $lte: 35
+  }
+})
+
+3.	Find users with ages between 25 and 40, excluding the bounds
+
+
+4.	Find users whose age is either 24, 29, or 34
+
+db.collection.find({
+  age: {
+    $in: [
+      24,
+      29,
+      34
+    ]
+  }
+})
+
+
+5.	Find a user by email
+
+6.	Find users from the USA
+
+db.collection.find({
+  "location.country": "USA"
+})
+
+
+7.	Find users who are not located in "New York" or "Los Angeles"
+
+db.collection.find({
+  "location.city": {
+    $nin: [
+      "Los Angeles",
+      "New York"
+    ]
+  }
+})
+
+
+8.	Find users who either live in “Austin” or are under 30 years old
+
+db.collection.find({
+  $or: [
+    {
+      "location.city": "Austin"
+    },
+    {
+      age: {
+        $lt: 30
+      }
+    }
+  ]
+})
+
+9.	Count users in a specific city
+
+10.	Find users with “reading” as a hobby
+
+db.collection.find({
+  hobbies: "reading"
+})
+
+11.	Find users who do not have a specific hobby (e.g., "reading")
+
+db.collection.find({
+  hobbies: {
+    $nin: [
+      "reading"
+    ]
+  }
+})
+
+12.	Find users who have both "reading" and "traveling" as hobbies
+
+db.collection.find({
+  hobbies: {
+    $all: [
+      "reading",
+      "traveling"
+    ]
+  }
+})
+
+13.	Find users with exactly two  hobbies
+
+
+db.collection.find({
+  hobbies: {
+    $size: 2
+  }
+})
+
+
+14.	Find users with multiple hobbies atlleast 2
+
+db.collection.find({
+  "hobbies.1": {
+    $exists: true
+  }
+})
+
+
+15.	 Find users with "yoga" as the first hobby
+
+
+db.collection.find({
+  "hobbies.0": {
+    "$in": [
+      "yoga"
+    ]
+  }
+})
+
+
+16.	Find users where any hobby starts with 'c'
+
+db.collection.find({
+  hobbies: {
+    $elemMatch: {
+      $regex: "^c",
+      $options: "i"
+    }
+  }
+})
+
+
+17.	Find users with a city name starting with 'S'
+
+db.collection.find({
+  "location.city": {
+    $regex: "^s",
+    $options: "i"
+  }
+})
+
+
+18.	Find users with a name that starts with a specific letter (e.g., 'A')
+
+db.collection.find({
+  name: {
+    $regex: "^A"
+  }
+})
+
+19.	. Find users where the city field exists
+
+    db.collection.find({
+  "location.city": {
+    "$exists": true
+  }
+})
+
+
+
+20.	Find users who are younger than 35 but are not living in "Chicago"
+
+db.users.find({
+    age: { $lt: 35 },
+    "location.city": { $ne: "Chicago" }
+});
+
+
+------------------------------------------
+
+
+21.	Update a user’s age
+
+db.collection.update({
+  name: "Alice Smith"
+},
+{
+  $set: {
+    age: 31
+  }
+})
+
+
+22.	Add a new hobby to a user’s hobbies array
+
+db.collection.update({
+  name: "Alice Smith"
+},
+{
+  "$push": {
+    "hobbies": "fucking"
+  }
+})
+
+
+23.	Delete a user by name
+
+db.users.deleteOne({ name: "Alice Smith" });
+
+
+24.	Aggregate users such that they are age older than 25,  count number of such people in each city, sort in descending orde and show only names
+
+
+//Aggregate users aged older than 25,
+//count them by city, sort descending,
+//and show only names:
+db.collection.aggregate([
+  {
+    $match: {
+      age: {
+        "$gt": 25
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$location.city",
+      totalName: {
+        "$sum": 1
+      }
+    }
+  },
+  {
+    $sort: {
+      totalName: -1
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      city: "$_id",
+      totalName: 1
+    }
+  }
+])
+
+
+
+--------------------------------------------
+Sort and limit
+
+25.	Sort users by age in descending order
+
+db.users.find().sort({ age: -1 });
+
+
+
+26.	Limit the number of results
+
+
+db.users.find().limit(5);
+
+
+
+27.	Projection nquery: Find only names of users who are younger than 35 but are not living in "Chicago"
+
+db.collection.find({
+  age: {
+    $lt: 35
+  },
+  "location.city": {
+    $ne: "Chicago"
+  }
+},
+{
+  name: 1,
+  _id: 0
+})
+
+
+

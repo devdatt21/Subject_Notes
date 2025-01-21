@@ -1,0 +1,377 @@
+
+how to create a react project :     
+
+    npx create-react-app myReactApp
+    cd myReactApp
+    npp start 
+
+
+contains of myReactApp : 
+    node_modules : libraries
+    package.json : dependencies with versions and scripts 
+    public folder : index.html
+    src folder : components and index.js    
+
+
+javascript XML(JSX)
+    syntax extension that allows you to write HTML 
+    directly within JS 
+
+    ex. 
+
+        const name = "josh perez";
+        const element = <h1> hello, {name} </h1>
+
+        ---------------------------------
+
+        function formatName(user){
+            return user.firstName + ' ' + user.lastName ;
+        }
+
+        const user = {
+            firstName : "devdatt",
+            lastName : "rupapara",
+        }
+
+        const element = (
+            <h1>
+                hello, {formateName(user)};
+            </h1>
+        )
+
+
+React ex. 
+
+    html file 
+
+        div id="root"
+
+        /div 
+
+    js file 
+    
+        const root = ReactDOM.creatRoot(document.getElementById('root'));
+        root.render(<h1>Hello, world</h1>);
+
+    output 
+
+        Hello, world 
+    
+
+React element 
+
+    react element, is a lightweight description of what 
+    to render, in javascript XML(JSX).
+
+    elements are smallest building blocks of the react app 
+
+    react elements can represent : DOM tags or user-defined 
+        components 
+
+    react elements are plain JS objects and are cheap 
+        to create 
+    
+    react DOM takes care of updating rendered screen to 
+        match the react elements 
+    
+        > reactDOM is a library in react used to interect   
+        with the DOM in web application 
+
+
+Rendering react elements 
+
+    to render a react element 
+        pass the DOM element to ReactDOM.createRoot(),
+        then pass the react element to root.render()
+
+    updating rendered react elements 
+        react only updates what is necessary 
+            react compares the elements and it's children
+            to previous ones and only make necessary 
+            changes to bring the DOM in a desired state 
+    
+Defining Components 
+
+    components let you split the UI into independent,
+    reusable pieces and think about each piece in isolation 
+
+    conceptually, components are like javascript functions 
+        input : props
+        return react elements 
+    
+    2 ways to define 
+        (always start a component name with a capital letter)
+        function 
+        class 
+    
+    <div /> is an html tag and <Welcome /> is a class 
+    component and requires Welcome to be in scope 
+
+creating and using compo.
+
+    inside src folder, create a comonent folder 
+    app.js is the main component 
+
+    exporting and importing as per (ES6 module)
+        export default Greeting;
+        import Greeting from './Greeting'
+    
+    each React component is eancapsulated and can 
+    operate independently; this allows you to build 
+    complex UIs from simple comps. 
+
+    comps can be nested and can be called multiple times 
+
+Event handling on DOM vs. React elements 
+
+    similar but there are syntex differences 
+        react events are named using camelCase, rather 
+            than lowercase 
+        with JSX u pass a func as event handler, rather 
+            than a string 
+    
+        preventing a default behavior 
+            html 
+                onsubmit="console.log('clicked'); return false;"
+            
+            react 
+                e.preventDefault();
+        
+React Router 
+
+    for routing in react
+
+    enables navigation of ur app by handling URL paths 
+    and rendering components dynamically
+
+    3 main comps :
+        1. <Nav> 
+              <Link to="/"> Home </Link>
+            ex. 
+            
+            nav is used to navigate user by clicking on link 
+                on page 
+                 <Nav>
+                    <Link to="/">Home</Link>
+                    <Link to="/about">About</Link>
+                </Nav>
+            
+            route is used to render a comp when user gose to 
+                particuler route 
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                </Routes>
+                
+        2. <Routes>
+
+           3. <Route path="/about" component={About} />
+        
+        </Routes>
+
+        <Route path="/" element={<Home />} />
+
+
+Inline if with logical && operator 
+    
+    unreadMessage.length > 0 && 
+        <h2> you have {unreadMessage.length} unread messages
+        </h2>
+
+Inline If-else 
+
+    unreadMessage.length > 0 ? 
+        <h2> you have {unreadMessage.length} unread messages
+        </h2>
+        :
+        <h2> no messages
+        </h2>
+
+
+Rendering Lists 
+
+    display array of items (users, products)
+    dynamically generating comps based on data 
+    handling dynamic changes (adding/removing)
+
+    to render list in React
+
+        JS's .map() method is used to iterate over
+            array
+        return JSX for each item 
+        each item in a list must have a unique key prop
+            to help react efficienlty update the DOM 
+            when the list changes. the key helps react 
+            identify which items have changed, been 
+            added or removed
+
+        code : 
+
+        <ul>
+            {items.map(item => (
+                <li key={item}> {item} </li>
+            ))}
+        </ul>
+
+React Hooks 
+
+    react hooks are funcitions that let us hook into 
+    the react state and lifecycle methods from 
+    function components 
+    
+    ex. 
+        useState() : returns an array with a stateful 
+            value and a function to update it 
+
+            allow you to add state to functional components
+
+            useState returns an array with 2 elements 
+                state and updater function 
+            
+            can be used multiple times in the same component 
+            
+            code : 
+
+                const [state, setState] = useState(initialValue);
+
+                onClick={() => {
+                    setCount(count + 1);
+                }}
+
+        useEffect() : perform side effects in function
+            components 
+
+            to : 
+                fetch data 
+                manage timers
+                manually changing the DOM 
+
+            ex. useEffect(() => {
+                fetchData();
+            },[]);
+
+            dependencies : listed as array and second argument 
+                you can have multiple useEffect hooks to 
+                saparate concerns 
+
+                [count]
+
+3 phases of comp lifecycle 
+
+    mounting 
+        when comp is inserted into the DOM 
+    
+    updating 
+        comp re-renders due to change in prop or state 
+    
+    unmounting 
+        when the component is removed from the DOM 
+    
+
+frontend using plain JS and react 
+
+    feature            plain JS                                 react 
+
+
+    handling state     DOM manipulation with getElementById     managed with useState hooks 
+
+    event handling     addEventListener on the form elem.       inline onSubmit handler in JSX. 
+
+    rendering          Direct DOM updates                       dynamic rendering via react JSX.
+
+    componentization   static HTML and JS                       reusable react component    
+
+    dynamic updates    manual DOM updates                       React re-renders when state changes 
+
+   
+
+
+Virtual Dom :   
+    desigend to optimize performance by minimizing 
+direct interactions with the real DOM 
+    each element in the DOM is a node in this tree 
+
+    working :
+
+        react creates a virtual represantation of the UI as a 
+        tree of JS objects 
+
+        it generates a new virtual DOM tree to reflect updates 
+        state when the application state changes 
+
+        react compares the new virtual DOM tree with the previous 
+        one using it efficient diffing algorithm to identify the 
+        minimal set of changes required 
+
+        react applies only the neccessary changes to the 
+        real DOM, optimizing rendering performance.
+
+    
+
+
+
+Error Boundary :
+
+
+props and state : 
+
+    props : ways to pass properties/data from parent component
+    to child component while the 
+
+        the data is passed from 1 comp to another 
+
+        it is immutable (cannot be modified)
+
+        props can be used with state and functional comp 
+
+        props are read-only
+
+    state : is the real-time data available to use within only 
+    that component.
+
+        data is passed within comp 
+
+        it is mutable 
+
+        the state can be used only with the state comp/class 
+        comp 
+
+
+
+
+All Basic hooks : 
+
+JSX : 
+
+    javascript XML 
+    used to describe UI 
+    allows to write html like code directly within JS 
+    under the hood, HSX gets trasplied into reguler JS using 
+        tool like babel 
+    if you dont want to use JSX then you have to use 
+        React.createElement('div',{id:'hello',className:'dummClass'},React.createElement('h1',null,'hello vishwas'));
+        
+
+        Babel : (traslator)
+
+            you wrote something in the latest fancy version 
+            of JS, but not all browsers or systems understand 
+            it yet.
+
+            babel takes your code and converts it into a simpler 
+            version that all browsers and environments can understand
+            it makes your code work everywhere, even on older browser
+
+            JS compiler and toolchain mainly used to convert modern
+            JS into older versions so that it can run in environments
+            or browsers that dont support the latest features                   
+
+
+
+
+Life cycles in react
+Optimization techniques (useMemo, useCallback)
+Pure Component
+state management (Redux, context and difference)
+render props
+Routing

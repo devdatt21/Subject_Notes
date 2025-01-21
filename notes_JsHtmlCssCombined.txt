@@ -1,0 +1,89 @@
+var : is hoisted but initialised as undefined you can access it before 
+line of the declaration 
+
+let and const : is hoisted but not initialised you can't access it before 
+the line of it's initialisation 
+
+function currying : breaking a function with multiple arguments into 
+series of functions that each take one argument 
+
+function sum(a){
+    return (c) => {
+        console.log(a+c);
+    }
+}
+
+sum(2)(3);
+
+
+DOM apis : methods to interact with Document object model 
+        document.getElementById()
+        document.querySelector()
+        document.getElementByClassName()
+
+JS Oparators :  === checks value and type 
+                == checks only value not type 
+
+
+DataTypes : 
+    primitive : number, boolean, string, undefined, null, symbol, bigint 
+    non-primitive : object, array, function 
+
+Decorators : 
+    functions to add functionality to classes, methods or properties 
+
+call back hell : 
+    when nested callbacks make code unreadable and hard to maintain 
+        use promise and async/await 
+
+
+event propogation and bubbling : 
+    propogation: how event travels in DOM 
+        bubbling : event travels from target to it's ancestor 
+        capturing : event travels from ancestor to target 
+
+closure :
+    a function remebers it's scope even after it is executed 
+
+    function a(){
+
+        let x=0;
+        function b()
+        {
+            x++;
+            return x
+        }
+
+        return b;
+
+
+    }
+
+    const xx = a();
+
+    console.log(xx());
+    console.log(xx());
+
+first class function : 
+    funtions treated as first class citizen 
+    can be used in place of variable 
+
+call back functions : 
+    function given as argument and called when certain task completed.
+
+arrow functions : 
+    short hand for function
+    do not have own this takes surrounding this 
+
+normal function : 
+    have own this 
+    
+
+this : 
+    refers to the object that owns the function
+
+higher order functions :    
+    accepts functions as arguments and returns functions 
+
+
+

@@ -260,12 +260,60 @@ React Hooks
 
     mounting 
         when comp is inserted into the DOM 
+
+        1. constructor() : 
+            called before anything else
+            natural place to setup the initial state 
+                and other initial value 
+            you should always start by calling super(props)
+                before anything else.
+
+        2. getDerivedStateFromProps()
+            called right before rendering the elements in 
+                the DOM 
+            
+        3. render() :   
+            method that actually outputs the HTML to the DOM 
+
+        4. componentDidMount()
+            called after the components is rendered 
+            where u can run statements that requires that 
+                the component is already placed in the dom
+
     
     updating 
         comp re-renders due to change in prop or state 
+
+        1. getDerivedStateFromProps()
+            first method to call when comp gets updated 
+            natural place to set state object based on 
+                initial props 
+            
+        2. shouldComponentUpdate() 
+            method you can return a boolean value that 
+                specifies whether React should continue 
+                the the rendering or not 
+            
+
+        3. render()
+            called when component gets updates 
+
+        4. getSnapshotBeforeUpdate()
+            in this method u have access to props and state 
+                before the update 
+            u can check what values were before the update 
+
+        5. componentDidUpdate()
+            called after the comp is updated in DOM 
+
     
     unmounting 
         when the component is removed from the DOM 
+
+        1. componentWillUnmount()
+            called when the comp is about to be removed 
+                from the DOM 
+
     
 
 frontend using plain JS and react 
@@ -311,6 +359,71 @@ direct interactions with the real DOM
 
 
 Error Boundary :
+
+    a Class comp becomes an error boundart if it defines 
+    either (or both) of the lifecycle methods 
+    static getDerivedStateFromError() 
+    or componentDidCatch()
+
+    use static getDerivedStateFromError() to render a fallback
+    UI after an error has been thrown.
+
+    use componentDidCatch() to log error information 
+
+    code : 
+    
+    class ErrorBoundary extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = { hasError: false };
+        }
+
+        static getDerivedStateFromError(error) {
+            // Update state so the next render will show the fallback UI.
+            return { hasError: true };
+        }
+
+        componentDidCatch(error, errorInfo) {
+            // You can also log the error to an error reporting service
+            logErrorToMyService(error, errorInfo);
+        }
+
+        render() {
+            if (this.state.hasError) {
+            // You can render any custom fallback UI
+            return <h1>Something went wrong.</h1>;
+            }
+
+            return this.props.children; 
+        }
+    }
+
+    then u can use it as a regular comp 
+    
+    <ErrorBoundary>
+        <MyWidget />
+    </ErrorBoundary>
+
+
+    error boundaries work like a JS catch{} block,
+    but for components. only class components can be error 
+    boundaries.
+
+    in practices, most of the time you'll want to declare 
+    an error boundary comp once and use it throughout 
+    your application
+
+    note that error boundaries only catch errors in the 
+    comps below them in the tree 
+
+    an error boundary can't catch an error within itself
+    
+    if an error coundary fails trying to render the error 
+    message, the error will propogate to the closest error
+    boundary above it.
+
+    this, too, is similar to how the catch {} block works 
+    in JS.
 
 
 props and state : 
@@ -370,8 +483,34 @@ JSX :
 
 
 Life cycles in react
-Optimization techniques (useMemo, useCallback)
 
+Optimization techniques (useMemo, useCallback) : 
+    The useCallback and useMemo Hooks are similar. The main difference is that 
+    useMemo returns a memoized value and useCallback returns a memoized function.
+    
+    useMemo() : 
+        used to memoize a computed value so that is only recalculated 
+        when its dependencies change.
+
+        it avoids recalculating expensive operations unnecessarily
+
+        code :  
+            const memoizedValue = useMemo(()=> computeValue, [dependencies])
+
+                computeValue : a function that returns the value to be memoizedValue
+                dependencies : an array of values that when changed, will re-trigger the computation
+
+    useCallback() : 
+        const addTodo = useCallback(() => {
+            setTodos((t) => [...t, "New Todo"]);
+        }, [todos]);
+
+        Comparison: useMemo vs useCallback
+        Feature	    useMemo	                        useCallback
+        Purpose	    Memoize a value	                Memoize a function
+        Return      Value	Returns the memoized    result	Returns the memoized function
+        Common      Use Case	Avoid recalculating	Avoid re-creating functions unnecessarily
+                        expensive operations
 Pure Component : 
 
     in react is like a super-efficient worker who does a task only 
@@ -407,9 +546,168 @@ Pure Component :
     use : 
         when your comp renders the same output for the same set 
         of props and state 
+
+
+
+state management (Redux, context and difference) :  
+    
+    context API : 
+        to avoid prop drilling (passing props through many layers of components)
+        allows to share state btw components at 
+        different nesting levels 
+
+    code : 
+            import React, {useContext, useState, createContext, Children} from "react";
+
+            // creating context 
+
+            const MyContext = createContext();
+
+            //provider function (we will wrap this function around the chlid function to access all the need data)
+
+            const MyProvider = ({children}) => {
+                const [name, setName] = useState("Devdatt")
+                
+                return (
+                    <MyContext.Provider value={{name, setName}}>
+                        {children}
+                    </MyContext.Provider>
+                )
+            }
+
+            const ChildComponent = () => {
+                const {name, setName} = useContext(MyContext);
+
+                return(
+                    <div className="flex flex-col items-center ">
+                        <h1>{name} </h1>
+                        <button className="bg-black text-white font-bold m-2 p-2 rounded-sm" onClick={() => setName("John wick")}> Change Name </button>
+                    </div>
+                )
+            }
+
+            const ContextComp = () => {
+
+
+                return (
+                    <MyProvider>
+                        <ChildComponent/>
+                    </MyProvider>
+                )
+            }
+
+            export default ContextComp;
+
+
+
+render props : 
+    technique for sharing code btw react comps using a 
+    props whose value is a function 
+
+    a comp with a render prop takes a func that 
+    returns a react element and calls it instead of
+    implementing its own render logic.
+
+     code : 
         
+        import React, { useState, useEffect } from "react";
+
+        function Clock({ render }) {
+            const [time, setTime] = useState(new Date());
+
+            useEffect(() => {
+                const timer = setInterval(() => {
+                    setTime(new Date());
+                }, 1000);
+
+                return () => {
+                    clearInterval(timer);
+                };
+
+            }, []);
+
+            return render(time);
+        }
+
+        function App() {
+            return (
+                <div className="App">
+                <h1>Render Props Example</h1>
+                <Clock
+                    render={(time) => {
+                        return <p>The current time is {time.toLocaleTimeString("en-US")}</p>;
+                    }}
+                />
+                </div>
+            );
+        }
+   
+
+Routing : 
+
+    code : 
+
+        import React from "react";
+        import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+        import Home from "./Home";
+        import About from "./About";
+        import Contact from "./Contact";
+
+        function App() {
+        return (
+            <Router>
+            <nav>
+                <Link to="/">Home</Link> | <Link to="/about">About</Link> | <Link to="/contact">Contact</Link>
+            </nav>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+            </Routes>
+            </Router>
+        );
+        }
+
+        export default App;
 
 
-state management (Redux, context and difference)
-render props
-Routing
+
+
+        import React from "react";
+        import { BrowserRouter as Router, Routes, Route, Link, useParams } from "react-router-dom";
+
+        function App() {
+        return (
+            <Router>
+            <nav>
+                <Link to="/">Home</Link> | <Link to="/user/1">User 1</Link> | <Link to="/user/2">User 2</Link>
+            </nav>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/user/:id" element={<User />} />
+            </Routes>
+            </Router>
+        );
+        }
+
+        function Home() {
+            return <h2>Welcome to the Home Page!</h2>;
+        }
+
+        function User() {
+            const { id } = useParams(); // Extract the dynamic "id" parameter from the URL.
+            return <h2>User Page: User ID is {id}</h2>;
+        }
+
+        export default App;
+
+
+
+
+
+        import { useNavigate } from "react-router-dom";
+
+        function Home() {
+            const navigate = useNavigate();
+            return <button onClick={() => navigate("/about")}>Go to About</button>;
+        }

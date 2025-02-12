@@ -230,7 +230,7 @@ functions are fully hoisted in js means full body of the function goes to the to
 by which you can access the function before it's definition
 
 but incase of variable with var, var only hoist the declaration and not assignment
-if you try to access the variable before it's definitio  it result undefined when the line of it's assignment
+if you try to access the variable before it's definition it result undefined when the line of it's assignment
 comes it shows the value of it
 
 

@@ -1,3 +1,132 @@
+React based framwork for building server-redered or statically
+generated application with features like routing, server-side 
+redering(SSR) and static site generation built-in 
+
+
+why use it : 
+
+    SEO-friendly 
+    Automatic code splitting
+    built-in routing (file based)
+    optimised performance 
+    API Routes
+
+
+file based routing :    
+
+    files in the pages/ directory map to routes automatically 
+
+        pages/index.js -> /
+        pages/about.js -> /about 
+
+dynamic Routes 
+        
+    use square brackets ([]) for dynamic routes 
+
+        pages/products/[id].js
+            URL : /products/123
+    
+catch-all routes 
+    
+    handle multiple segments with [...]
+    ex. 
+        pages/products/[...slug].js 
+        URL : /products/category/shoes 
+
+API Routes 
+
+    create serverless functions in pages/api 
+    ex. pages/api/hello.js 
+
+
+Redering strategies : 
+
+    CSR : 
+        rendered entirely in the browser 
+        suitable for non-critical pages 
+
+    SSR : 
+        rendered on the server for each request 
+        2nd parameter in fetch function {cache : 'no-store'}
+        will make a function server side rendered 
+
+        use getServerSideProps  
+
+
+    SSG : 
+
+        by-default next js uses statice site generation 
+        when you give the second parameter in fetch function 
+        then it becomes SSR 
+
+        build pages at build time use "getStaticProps"
+    
+    ISR : (incremental static regeneration)
+        rebuild pages incrementally after the specified 
+        revalidate time 
+
+        2nd parameeter in fetch function {next : {revalidate : 10}}
+        clears the cache in 10 second and re-renders the page 
+
+
+    
+    getStaticProps : fetches data at build time and the page is 
+        static for all the users (unless revalidated)
+    
+    getServerSideProps : fetches data at request time, meaning the 
+        page is dynamically generated for each request 
+    
+
+
+    how ISR works under the hood : 
+
+        when the next app is deployed the static pages are build 
+        and stored on server(CDN)
+
+        served directly to the user without hitting the server 
+        when the page is requested 
+
+        untill the revalidate time is exceeds 
+
+        when revalidate time exceeds it regenerates the page in 
+        backgroud and updates the static file 
+
+        while this happens the old page is served ensuring no 
+        down time for users 
+
+        here only requested pages are built not entire site 
+
+
+
+
+
+removing unused styles is called tree shaking 
+
+every next js route is serverless route 
+    which means it is a lambda function which opens up only
+    when it gets called 
+
+    means every time it gets called it have to spin up the 
+    server to make a connection with database 
+
+Next Project structure  : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 next js uses file based routing 
     so you dont have to configure the routing manually
     next js will do it for you 

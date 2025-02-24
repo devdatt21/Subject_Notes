@@ -1354,7 +1354,7 @@ React Query (TanStack Query):
 
         
         what it returns : 
-            key properties : 
+            key properties :    
                 data 
                     the result of the query(queryFn)
                     this will contain the fetched data once query is successful
@@ -1396,3 +1396,19 @@ React Query (TanStack Query):
             ,
 
     Managing server state efficiently.
+
+
+
+fetch vs axios
+
+    fetch : not http error handling only network error handling
+    axios : provides both 
+
+    fetch : no built int timeout support
+    axios : timeout method built-in 
+
+    fetch : must manually json parsing 
+    axios : built in json parsing 
+
+    fetch : no middleware like function 
+    axios : built in interceptor that acts like middleware 

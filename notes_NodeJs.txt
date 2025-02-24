@@ -261,4 +261,75 @@ Node for servers
     sol : use frameworks 
 
 
+Web worker : 
+
+    when you have to do computation heavy task in the background saperate from the main thread(event loop)
+
+    code : 
+
+        // main.js
+        const worker = new Worker('worker.js');
+
+        worker.postMessage('Hello, Worker!');
+
+        worker.onmessage = function(e) {
+            console.log('Message from worker:', e.data);
+        };
+
+        // worker.js
+        self.onmessage = function(e) {
+            console.log('Received:', e.data);
+            self.postMessage('Task Completed');
+        };
+        
+        Feature                | Web Workers (Browser)           | Worker Threads (Node.js)
+        ---------------------- | ----------------------------- | --------------------------
+        Runs on               | Browsers                      | Node.js
+        Uses                  | Worker API                    | worker_threads module
+        Can Access            | Only self, no DOM             | Full Node.js APIs
+        Communication         | postMessage()                 | parentPort.postMessage()
+        Best for              | Heavy computations (graphics, AI, etc.) | CPU-intensive tasks (encryption, file processing)
+        Thread Pool           | No built-in thread pool       | Uses libuv thread pool
+
+ORM : 
+    no need to  write raw SQL queries 
+    ORM like squalize or prisma will help you do it 
+    we can use it's prebuilt function instead of INSERT, SELECT, UPDATE 
+    we dont have to change the queries when we change the database 
+
+how JS run : 
+
+    parsing and compilation : 
+
+        parsing : JIT converts code into AST(abstract tree like structure)
+        then 
+        interpreter(ignition) : AST to bytecode 
+        optimization(turboFan) : some bytecode to machinecode for speed 
+
+    EC(execution context) : 
+
+        GEC : created when the script starts 
+        FEC : created when a function is called 
+
+    Memory alocation : 
+
+        JS 2 types of memory : 
+            heap : stores object and function 
+            stack : premitive values and function calls 
+    
+    JS call stack : 
+
+        LIFO : when a function is called its pushed into the stack 
+                when complete then poped off the stack 
+    
+    event loop and Asyncronous Exection : 
+
+        call stack -> web API zone -> callback queue -> event loop -> call stack -> gone 
+    
+    garbage collection : 
+
+        using mark and sweep 
+        which variable are still in use remains others are collected 
+    
+
 

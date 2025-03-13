@@ -1393,7 +1393,7 @@ React Query (TanStack Query):
             infinite scrolling 
             dependent queries 
             server state synchronization
-            ,
+            
 
     Managing server state efficiently.
 

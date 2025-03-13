@@ -1,0 +1,370 @@
+~~~~~~HTML Topics :~~~~~~~~~~
+ 
+Common tags like head, body, title, p, h1,h2,..,div  
+ 
+text formatting tags like b, i, u, strong, em, sub, sup, pre
+ 
+other tag like anchor, images etc.
+ 
+For list ol, ul
+ 
+Table tag : tr, td, th
+ 
+Form tag : 
+    input, textarea, select, button
+    input types : 
+        text, password, email, number, file, radio, checkbox, submit
+ 
+    form validation attributes :
+        required, pattern, min, max
+ 
+sematics :  
+    header, footer, main, section, nav,
+ 
+ 
+multimedia tags : 
+    audio, video, embed, iframe, canvas
+ 
+meta tag for metadata : 
+    id, class, style
+ 
+
+ 
+~~~~~~~~~~~~CSS Topics :~~~~~~~~~~~~
+ 
+inline CSS 
+internal CSS
+external CSS
+ 
+selectors :     
+    *, .class, #id, element 
+ 
+    grouping selectors : h1, p
+ 
+    descendent, child, sibling selectors
+ 
+ 
+colors :    
+    RGB, RGBA, named colors, HEX
+ 
+Box model :
+ 
+    margin, border, padding, content
+ 
+text and fonts
+ 
+positioning : 
+    static : fixed no top,left,right,bottom, 
+    relative : relative to surrounding css move from where it was, 
+    absolute : finds parent if not makes <html> to put css on  , 
+    fixed : not moved when scrollig , 
+    sticky : acts relative but sticks when user scrolls past it
+ 
+flexbox : 
+    justify-content align-items
+ 
+pseudo classes and elements :   
+    :hover, :focus, :nth-child(n), :first-child 
+    ::before, ::after, ::placeholder
+
+
+
+~~~~~~~~~~~~ JS ~~~~~~~~~~~~
+
+closure : a function that remembers the scope in which it was created, even if the scope has finished executing 
+function declaration - expression : storing a function in a variable is function expression 
+first class functions : they treated like any other value, passing as argument, returning it from a function etc.
+    helps in implementing highe order function and callbacks
+callback functions : function passed as an argument and executed later ex. setTimeout() 
+arrow functions : consice version of normal function, does not have its own this binding it in herits from 
+    its surrounding scope, used for maintainig lexical this in class and objects 
+this keyword : this refers to the object that calls the function, its value depends on how and where the function in invoked 
+event loop : handles async operation by managing callback queue, web API, and call stack, constantly checks call stack and when it finds it empty it will move the callback function to call stack and it will be executed 
+execution context : env where JS code runs, manages variable and this keyword 3 types : global, functional, eval
+JIT compiler : JIT in v8 engine : parsing and tokenization -> parsed into AST, baseline interpretation -> ignition interpreter converts js code in bytecode, optimization -> turbo fan compiler detects frequently used code it converts that code in highly optimised machine code, de-optimization -> if the code changes it agina recompiles the code 
+garbage collection : mark and sweep algorithm, define reachable objects and unrechable objects and removes unreachable objects 
+inline caching : JIT stores the function result to speed up 
+higher order functions : either takes function as input or return another function as output 
+polyfills : fuction used to implement new fucntionality in old systems like reduce and map in older version of browser
+map(), reduce(), filter() : higher order function : 
+promise : eventual completion or failure of an async operation -> 3 states pending , fullfilled, rejected. helps in handling callback hell
+async/await : for handling promises 
+fetch : used to make async http request that returns promise that resolves with response 
+call() : greeting.call(user, "newyork"), apply() : greeting.apply(user,["newyork","london"]), bind() : returns a permanently set object with the function's this value 
+function currying : function takes multiple arguments one at a time, instead of all at once 
+prototype : every function has prototype property, allows shared methods across multiple inheritance allows code reusability 
+class : 
+iterators and iterables : 
+Hoisting : accessing a variable or function before it's initialiaztion is hoisting if a var is accessed before it's declaration it will be undefined , if let or const is accessed before its declaration its referece error(because it in tempora dead zone), if accessed before initialization its undefined  [ let is declared but not initialiazed then its in TDZ untill the initialization line comes, not TDZ for var]
+Dom apis : allows to manipulate HTML document, ex. document.getElementById(), addEventListener. document.createElement(), .innerText, .innerHTML, classList.add(), alert, prompt(), confirm(), window.location
+javaScript Operators : 
+Data Types : primitive : number, string, undefined, null, integer, symbol, NaN and non primitive : map, set, object, function
+Callback hell : 
+Add Event Listener 
+bubbling : event going from child to parent (propogation phase)
+capturing : event going from parent to child (true) (capturing phase)
+
+
+~~~~~~~~~~~~~ react ~~~~~~~~~~~~~~~~
+
+Virtual Dom : copy of real DOM,reconciliation : updates only neccessary parts using diffing algorithms 
+Error Boundary : 
+    used for handle error gracefully instead of crashing entire app, uses componentDidCatch and getDerivedStateFromError 
+
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+    
+    static getDerivedStateFromError(error) {
+        return { hasError: true };
+    }
+    
+    componentDidCatch(error, info) {
+        console.error("Error caught:", error);
+    }
+    
+    render() {
+        return this.state.hasError ? <h1>Something went wrong.</h1> : this.props.children;
+    }
+}
+
+props and state : props are immutable, managed by parent, used to pass data from parent to child, state : mutable using setState(), managed by component itself, used to manage component specific data, 
+All Basic hooks : useEffect, useState, useSession, useRef : persist data without causing rerender , useMemo : used to cache expensive calculation, takes a call back function and a dependency array when the value of variable in dependency array changes the callback function is again executed 
+JSX 
+Life cycles in react 
+Optimization techniques (useMemo, useCallback)
+Pure Component ( React.memo() is functional equivelent to React.PureComponent )
+state management (Redux, context and difference)
+render props
+Routing 
+Forms and Inputs:
+    Controlled : controlled by react like using useState vs. uncontrolled component : value accessed direclty from the DOM no re-render on change  
+    Form handling with onChange and onSubmit.
+Styling in React:
+    CSS Modules.
+    Styled-components or Emotion.
+    Inline styles and utility-first CSS (e.g., Tailwind CSS).
+Error Handling:
+    Error boundaries (componentDidCatch in class components).
+    Handling errors gracefully with React.
+Refs and DOM Manipulation:
+    Using React.forwardRef. : passes a ref from parent to child         
+    Manipulating DOM with useRef :  stores reference to a DOM element 
+Advanced Hooks:
+    Custom Hooks (extracting reusable logic).
+    useLayoutEffect : runs before browser repaints the page, blocking (synchronous) vs. useEffect : runs after repaint (async(non-blocking))
+React Performance Optimization:
+    React.memo : for functional comp  and PureComponent : for class comp (no re-render until state of comp changes actually )
+    Lazy loading with React.lazy and Suspense. : calling specific component only when it about to mount on the page 
+    Code splitting. : using lazy loading 
+React Query (TanStack Query):
+    Data fetching, caching, and synchronization. : gives 2 states to manage the UX (loading, error, data), useQuery() takes 2 params : queryFn and queryKey
+    Managing server state efficiently. : used for infinite scrolling, data caching (helps in reducing excessive api calls, it won't re-fetch the data untill the quearyKey is changed);
+
+
+
+~~~~~~~~~~ next js ~~~~~~~~~~~~~~~
+
+1. Introduction to Next.js
+
+What is Next.js and why use it?
+Difference between Next.js and React.js
+Setting up a Next.js project (npx create-next-app@latest)
+
+2. Project Structure & Routing
+
+File-based routing in Next.js (pages/)
+Dynamic routes (pages/products/[id].js)
+Catch-all routes (pages/products/[...slug].js) : to catch all routes like /products/type/category/colors 
+API routes (pages/api/hello.js)
+
+3. Rendering Strategies
+
+CSR (Client-Side Rendering)
+SSR (Server-Side Rendering)
+getServerSideProps()
+SSG (Static Site Generation)
+getStaticProps()
+getStaticPaths()
+ISR (Incremental Static Regeneration)
+revalidate in getStaticProps
+ 
+ 
+4. Styling & UI
+Using CSS Modules (.module.css)
+Using Tailwind CSS in Next.js
+Using Styled Components
+Customizing the <Head> with next/head
+
+5. API Routes & Middleware
+
+Creating API routes (pages/api)
+Handling requests in API (req, res)
+Middleware in Next.js (custom middleware for auth, logging, etc.)
+Edge Functions (Optional, for performance optimization)
+ 
+6. Data Fetching & State Management
+
+Fetching data using fetch() or axios
+Using React Query (TanStack Query) for data fetching
+Managing global state with:
+Context API
+Redux Toolkit
+
+7. Authentication & Authorization
+
+Implementing NextAuth.js
+Social logins (Google, GitHub, etc.)
+Role-based authentication (Admin/User)
+
+8. Performance Optimization
+
+Image optimization using next/image
+Font optimization using next/font
+Caching & ISR (revalidate in getStaticProps)
+Using SWC Compiler for fast builds
+
+9. Deployment & CI/CD
+
+Deploying on Vercel (default for Next.js)
+CI/CD setup using GitHub Actions
+Environment variables in Next.js (.env.local)
+Azure Basic UnderStanding
+ 
+10. Advanced Topics
+Internationalization (i18n)
+
+Custom Error Handling & Error Boundaries
+WebSockets in Next.js : io.emit("message", message) , io.on(), 
+Building a Full Stack App with Prisma & Next.js : prisma is modern ORM, used to manage DB, ORM used to interect with DB using Code instead of RAW SQL query, maps tables to objects in a programming language 
+GraphQL with Next.js using Apollo Client  GQL : is a query language for APIs that allows clients to request only data they need, alternative to REST APIs , fetches only required data : client only gets what they need, strongly typed schema : defines structure of available data, solves over-fetching and under-fetching issues , Apollo client : helps react/next js interect with grapQL(graphQL client) 
+Serverless Functions in Next.js : backend API routes that runs on demand, they auto-scale based on needs, in vercel an api route is by default serverless function 
+ 
+
+
+~~~~~~~~~~~~ express ~~~~~~~~~~~~~~~
+
+1. Introduction to Express.js
+
+What is Express.js?
+Features of Express.js
+Setting up an Express.js project (npm init, installing Express)
+
+2. Basic Server Setup
+
+Creating a basic Express server
+Understanding app.listen()
+Handling basic routes (GET, POST)
+
+3. Routing in Express
+
+Route parameters and query strings
+Handling different HTTP methods (GET, POST, PUT, DELETE, PATCH)
+Route grouping and modular routing using express.Router()
+
+4. Middleware
+
+What is middleware in Express?
+Built-in middleware (express.json(), express.urlencoded(), express.static())
+Creating custom middleware
+Error-handling middleware
+
+5. Request and Response Objects
+
+Understanding req (request) and res (response) objects
+Sending responses (res.send(), res.json(), res.status())
+Handling JSON data
+
+6. Templating Engines
+
+Introduction to templating engines (e.g., EJS, Pug)
+Setting up and using EJS to render dynamic content
+
+7. Static Files
+
+Serving static files (CSS, images, JavaScript)
+Using express.static()
+
+8. Handling Forms & Data
+
+Parsing form data using express.urlencoded()
+Handling JSON data with express.json()
+
+1. Advanced Routing Concepts
+
+Nested routes and route grouping
+Route prefixes and parameterized routes
+Using express.Router() for modular routing in large applications
+
+2. Middleware Deep Dive
+
+Chaining multiple middleware functions
+Third-party middleware (e.g., morgan for logging, helmet for security)
+Conditional middleware execution
+
+3. RESTful API Best Practices
+
+Structuring a scalable REST API
+Implementing proper HTTP status codes
+Handling query parameters, pagination, and sorting
+
+4. Authentication & Authorization
+
+Implementing JWT (JSON Web Tokens) for stateless authentication
+Session-based authentication using express-session
+Role-based access control (RBAC) for different user permissions
+
+5. Error Handling & Logging
+
+Centralized error handling using middleware
+Custom error classes
+Logging with winston or morgan
+
+6. Working with Databases
+
+Using Mongoose for advanced MongoDB operations (e.g., population, aggregation)
+Using SQL databases with Sequelize or Knex.js
+Schema design and relationships (1-to-many, many-to-many)
+
+7. File Uploads & Handling
+
+Uploading files with multer
+Serving and managing static files securely
+Handling large file uploads and storage
+
+8. Environment Management & Configuration
+
+Using environment variables for different environments (development, staging, production)
+Configuration management using config or dotenv-flow
+ 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Basics of story book 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SQL and Its implementation 
+
+
+
+Decorators
+Emotion
+Using SWC Compiler for fast builds
+CI/CD setup using GitHub Actions
+Azure 
+WebSockets in Next.js
+Prisma : ORM for managing DB, it is a mechanism to interact with DB with code instead of raw query. it maps object with tables in DB 
+GraphQL with Next.js using Apollo Client : apollow client is GraphQL client to use GQL in react/next, it is a query language, with help of gql we can get exact data we need, solution for over-fetching and under-fetching, strongly defined schema, define structure of available data 
+Using SQL databases with Sequelize or Knex.js
+
+
+
+
+
+
+
+
+

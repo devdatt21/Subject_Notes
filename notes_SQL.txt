@@ -1,0 +1,334 @@
+~~~~~~HTML Topics :~~~~~~~~~~
+ 
+Common tags like head, body, title, p, h1,h2,..,div  
+ 
+text formatting tags like b, i, u, strong, em, sub, sup, pre
+ 
+other tag like anchor, images etc.
+ 
+For list ol, ul
+ 
+Table tag : tr, td, th
+ 
+Form tag : 
+    input, textarea, select, button
+    input types : 
+        text, password, email, number, file, radio, checkbox, submit
+ 
+    form validation attributes :
+        required, pattern, min, max
+ 
+sematics :  
+    header, footer, main, section, nav,
+ 
+ 
+multimedia tags : 
+    audio, video, embed, iframe, canvas
+ 
+meta tag for metadata : 
+    id, class, style
+ 
+
+ 
+~~~~~~~~~~~~CSS Topics :~~~~~~~~~~~~
+ 
+inline CSS 
+internal CSS
+external CSS
+ 
+selectors :     
+    *, .class, #id, element
+ 
+    grouping selectors : h1, p
+ 
+    descendent, child, sibling selectors
+ 
+ 
+colors :    
+    RGB, RGBA, named colors, HEX
+ 
+Box model :
+ 
+    margin, border, padding, content
+ 
+text and fonts
+ 
+positioning : 
+    static, relative, absolute, fixed, sticky
+ 
+flexbox : 
+    justify-content align-items
+ 
+pseudo classes and elements :   
+    :hover, :focus, :nth-child(n), :first-child 
+    ::before, ::after, ::placeholder
+
+
+
+~~~~~~~~~~~~ JS ~~~~~~~~~~~~
+
+closure
+function declaration - expression
+first class functions
+callback functions
+arrow functions
+this keyword
+event loop
+JIT compiler
+garbage collection
+inline caching
+higher order functions
+polyfills
+map(), reduce(), filter()
+promise
+async/await
+fetch
+call(), apply(), bind()
+function currying
+prototype
+class
+iterators and iterables
+Hoisting
+function currying
+Dom apis
+javaScript Operators
+Data Types
+Decorators
+Callback hall
+Add Event Listener 
+propogation, bubbling 
+
+
+~~~~~~~~~~~~~ react ~~~~~~~~~~~~~~~~
+
+Virtual Dom
+Error Boundary 
+props and state
+All Basic hooks
+JSX
+Life cycles in react
+Optimization techniques (useMemo, useCallback)
+Pure Component
+state management (Redux, context and difference)
+render props
+Routing
+Forms and Inputs:
+    Controlled vs. uncontrolled components.
+    Form handling with onChange and onSubmit.
+Styling in React:
+    CSS Modules.
+    Styled-components or Emotion.
+    Inline styles and utility-first CSS (e.g., Tailwind CSS).
+Error Handling:
+    Error boundaries (componentDidCatch in class components).
+    Handling errors gracefully with React.
+Refs and DOM Manipulation:
+    Using React.forwardRef.
+    Manipulating DOM with useRef.
+Advanced Hooks:
+    Custom Hooks (extracting reusable logic).
+    useLayoutEffect vs. useEffect.
+React Performance Optimization:
+    React.memo and PureComponent.
+    Lazy loading with React.lazy and Suspense.
+    Code splitting.
+React Query (TanStack Query):
+    Data fetching, caching, and synchronization.
+    Managing server state efficiently.
+
+
+
+~~~~~~~~~~ next js ~~~~~~~~~~~~~~~
+
+1. Introduction to Next.js
+
+What is Next.js and why use it?
+Difference between Next.js and React.js
+Setting up a Next.js project (npx create-next-app@latest)
+
+2. Project Structure & Routing
+
+File-based routing in Next.js (pages/)
+Dynamic routes (pages/products/[id].js)
+Catch-all routes (pages/products/[...slug].js)
+API routes (pages/api/hello.js)
+
+3. Rendering Strategies
+
+CSR (Client-Side Rendering)
+SSR (Server-Side Rendering)
+getServerSideProps()
+SSG (Static Site Generation)
+getStaticProps()
+getStaticPaths()
+ISR (Incremental Static Regeneration)
+revalidate in getStaticProps
+ 
+ 
+4. Styling & UI
+Using CSS Modules (.module.css)
+Using Tailwind CSS in Next.js
+Using Styled Components
+Customizing the <Head> with next/head
+
+5. API Routes & Middleware
+
+Creating API routes (pages/api)
+Handling requests in API (req, res)
+Middleware in Next.js (custom middleware for auth, logging, etc.)
+Edge Functions (Optional, for performance optimization)
+ 
+6. Data Fetching & State Management
+
+Fetching data using fetch() or axios
+Using React Query (TanStack Query) for data fetching
+Managing global state with:
+Context API
+Redux Toolkit
+
+7. Authentication & Authorization
+
+Implementing NextAuth.js
+Social logins (Google, GitHub, etc.)
+Role-based authentication (Admin/User)
+
+8. Performance Optimization
+
+Image optimization using next/image
+Font optimization using next/font
+Caching & ISR (revalidate in getStaticProps)
+Using SWC Compiler for fast builds
+
+9. Deployment & CI/CD
+
+Deploying on Vercel (default for Next.js)
+CI/CD setup using GitHub Actions
+Environment variables in Next.js (.env.local)
+Azure Basic UnderStanding
+ 
+10. Advanced Topics
+Internationalization (i18n)
+
+Custom Error Handling & Error Boundaries
+WebSockets in Next.js
+Building a Full Stack App with Prisma & Next.js
+GraphQL with Next.js using Apollo Client
+Serverless Functions in Next.js
+ 
+
+
+~~~~~~~~~~~~ express ~~~~~~~~~~~~~~~
+
+1. Introduction to Express.js
+
+What is Express.js?
+Features of Express.js
+Setting up an Express.js project (npm init, installing Express)
+
+2. Basic Server Setup
+
+Creating a basic Express server
+Understanding app.listen()
+Handling basic routes (GET, POST)
+
+3. Routing in Express
+
+Route parameters and query strings
+Handling different HTTP methods (GET, POST, PUT, DELETE)
+Route grouping and modular routing using express.Router()
+
+4. Middleware
+
+What is middleware in Express?
+Built-in middleware (express.json(), express.urlencoded(), express.static())
+Creating custom middleware
+Error-handling middleware
+
+5. Request and Response Objects
+
+Understanding req (request) and res (response) objects
+Sending responses (res.send(), res.json(), res.status())
+Handling JSON data
+
+6. Templating Engines
+
+Introduction to templating engines (e.g., EJS, Pug)
+Setting up and using EJS to render dynamic content
+
+7. Static Files
+
+Serving static files (CSS, images, JavaScript)
+Using express.static()
+
+8. Handling Forms & Data
+
+Parsing form data using express.urlencoded()
+Handling JSON data with express.json()
+
+1. Advanced Routing Concepts
+
+Nested routes and route grouping
+Route prefixes and parameterized routes
+Using express.Router() for modular routing in large applications
+
+2. Middleware Deep Dive
+
+Chaining multiple middleware functions
+Third-party middleware (e.g., morgan for logging, helmet for security)
+Conditional middleware execution
+
+3. RESTful API Best Practices
+
+Structuring a scalable REST API
+Implementing proper HTTP status codes
+Handling query parameters, pagination, and sorting
+
+4. Authentication & Authorization
+
+Implementing JWT (JSON Web Tokens) for stateless authentication
+Session-based authentication using express-session
+Role-based access control (RBAC) for different user permissions
+
+5. Error Handling & Logging
+
+Centralized error handling using middleware
+Custom error classes
+Logging with winston or morgan
+
+6. Working with Databases
+
+Using Mongoose for advanced MongoDB operations (e.g., population, aggregation)
+Using SQL databases with Sequelize or Knex.js
+Schema design and relationships (1-to-many, many-to-many)
+
+7. File Uploads & Handling
+
+Uploading files with multer
+Serving and managing static files securely
+Handling large file uploads and storage
+
+8. Environment Management & Configuration
+
+Using environment variables for different environments (development, staging, production)
+Configuration management using config or dotenv-flow
+ 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Basics of story book 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SQL and Its implementation 
+
+
+
+Decorators
+Emotion
+Using SWC Compiler for fast builds
+CI/CD setup using GitHub Actions
+Azure 
+WebSockets in Next.js
+Prisma 
+GraphQL with Next.js using Apollo Client
+Using SQL databases with Sequelize or Knex.js

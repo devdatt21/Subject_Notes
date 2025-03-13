@@ -1,0 +1,126 @@
+variable and function : camelCase
+constants and Enums : UPPER_SNAKE_CASE
+class name : PascalCase 
+folder name : kebab-case 
+
+component files : 2 ways -> 1. entry point index.tsx 
+                            2. supporting component files should use TitleCase 
+regular files : camelCase 
+
+each file should only contain one component 
+
+store all type of definitions in a type/ folder 
+
+store all api functions in a service folder
+
+
+admin pages : 
+    account activity : user activity and tracking and logs  
+    account settings : user and system configuration 
+    brand management : brand creation and management 
+    store management : store builder and configuration 
+    colors : color management system 
+    company : company-wide settings and configurations 
+
+components : 
+    table : advanced data table with sorting filtering, pagination 
+    forms : form components with validation 
+    modals : reusable modal components 
+    UI elements : buttons, inputs, dropdowns etc. 
+
+Authentication & authorization : 
+
+    role-based accesss control 
+    session management 
+    security policies 
+
+component structure : 
+
+base components :   
+    interface ButtonProps {
+        variant : 'primary' | 'secondary' | 'outline';
+        size : 'sm' | 'md' | 'lg';
+        onClick? : () => void;
+        children : React.ReactNode;
+    }    
+
+Lauout componnets : 
+
+    PageHeader 
+    sidebar
+    Navigation 
+    Footer 
+
+Form Components :   
+
+    input fields 
+    select dropdowns 
+    checkboxs
+    radio buttons 
+    rich text editor 
+
+services 
+
+API Service Structure : 
+
+    interface IApiService {
+        get<T>(url:string) : Promise<T>;
+        post<T>(url:string, data:unknown): Promise<T>;
+        put<T>(url:string, data:unknown):Promise<T>;
+        delete<T>(url:string):Promise<T>;
+    }
+
+    service modules : 
+
+    user Service : 
+        authentication
+        profile management 
+        activity logging
+    
+    store service : 
+        store CRUD operations 
+        configurations management 
+        theme managment 
+    
+    Brand Service :
+        Brand management 
+        Catalog operations
+        Image handling 
+
+Types & interfaces 
+
+common types : 
+
+    intrface IPaginationData {
+        pageIndex : number;
+        pageSize :number;
+        totalCount:number;
+        hasPreviousPage:boolean;
+        hasNextPage:boolean;
+    }
+
+    interface : ISortOption {
+        field:string;
+        direction :number;
+        priority :number;
+    }
+
+    interface : IFilterOption {
+        columnName: string;
+        value:unknown;
+    }
+
+module specific tyeps 
+    brand types 
+    store types 
+    user types 
+    settings types 
+
+utilities 
+
+1. data utilities 
+
+    interface IFormattedDate {
+        data : string;
+        time : string 
+    }

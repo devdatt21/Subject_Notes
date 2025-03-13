@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop Elements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .draggable-items, .drop-zones {
+            width: 45%;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            min-height: 300px;
+        }
+        
+        .draggable-item {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: move;
+        }
+        
+        .drop-zone {
+            margin: 10px 0;
+            padding: 15px;
+            border: 2px dashed #aaa;
+            border-radius: 3px;
+            min-height: 50px;
+        }
+        
+        .drop-zone.highlight {
+            background-color: #f7f7f7;
+            border-color: #666;
+        }
+        
+        .item-in-dropzone {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 3px;
+        }
+        
+        h2 {
+            margin-top: 0;
+        }
+        
+        .reset-button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .reset-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Drag and Drop Elements</h1>
+    
+    <button class="reset-button" onclick="resetItems()">Reset Items</button>
+    
+    <div class="container">
+        <div class="draggable-items">
+            <h2>Draggable Items</h2>
+            <div class="draggable-item" draggable="true" id="item1">Item 1</div>
+            <div class="draggable-item" draggable="true" id="item2">Item 2</div>
+            <div class="draggable-item" draggable="true" id="item3">Item 3</div>
+            <div class="draggable-item" draggable="true" id="item4">Item 4</div>
+            <div class="draggable-item" draggable="true" id="item5">Item 5</div>
+        </div>
+        
+        <div class="drop-zones">
+            <h2>Drop Zones</h2>
+            <div class="drop-zone" id="zone1">Zone 1</div>
+            <div class="drop-zone" id="zone2">Zone 2</div>
+            <div class="drop-zone" id="zone3">Zone 3</div>
+        </div>
+    </div>
+    
+    <script>
+        // Store original positions
+        const originalHTML = document.querySelector('.draggable-items').innerHTML;
+        const originalZones = [];
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            originalZones[zone.id] = zone.innerHTML;
+        });
+        
+        // Initialize the drag and drop functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all draggable items
+            const items = document.querySelectorAll('.draggable-item');
+            
+            // Add event listeners to each item
+            items.forEach(item => {
+                item.addEventListener('dragstart', dragStart);
+                item.addEventListener('dragend', dragEnd);
+            });
+            
+            // Get all drop zones
+            const dropZones = document.querySelectorAll('.drop-zone');
+            
+            // Add event listeners to each drop zone
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', dragOver);
+                zone.addEventListener('dragenter', dragEnter);
+                zone.addEventListener('dragleave', dragLeave);
+                zone.addEventListener('drop', drop);
+            });
+        });
+        
+        // Drag and drop functions
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+            setTimeout(() => {
+                e.target.classList.add('hide');
+            }, 0);
+        }
+        
+        function dragEnd(e) {
+            e.target.classList.remove('hide');
+        }
+        
+        function dragOver(e) {
+            e.preventDefault();
+        }
+        
+        function dragEnter(e) {
+            e.preventDefault();
+            e.target.classList.add('highlight');
+        }
+        
+        function dragLeave(e) {
+            e.target.classList.remove('highlight');
+        }
+        
+        function drop(e) {
+            e.preventDefault();
+            e.target.classList.remove('highlight');
+            
+            // Get the draggable element
+            const id = e.dataTransfer.getData('text/plain');
+            const draggable = document.getElementById(id);
+            
+            // Check if the drop target is a drop zone
+            if (e.target.classList.contains('drop-zone')) {
+                // Create a copy of the item with a different style for the drop zone
+                const itemInZone = document.createElement('div');
+                itemInZone.classList.add('item-in-dropzone');
+                itemInZone.textContent = draggable.textContent;
+                itemInZone.setAttribute('data-original-id', id);
+                
+                // Add the item to the drop zone
+                e.target.appendChild(itemInZone);
+                
+                // Remove the original item from the draggable items list
+                draggable.remove();
+            }
+        }
+        
+        // Reset function
+        function resetItems() {
+            // Restore draggable items
+            document.querySelector('.draggable-items').innerHTML = originalHTML;
+            
+            // Restore drop zones
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.innerHTML = originalZones[zone.id];
+            });
+            
+            // Reinitialize drag and drop
+            const items = document.querySelectorAll('.draggable-item');
+            items.forEach(item => {
+                item.addEventListener('dragstart', dragStart);
+                item.addEventListener('dragend', dragEnd);
+            });
+        }
+    </script>
+</body>
+</html>

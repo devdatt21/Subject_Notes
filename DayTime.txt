@@ -53,6 +53,58 @@ when i am about to take the bet.
 
 
 
+Hilyo (Have It Like Your Own) : survey for features and fucntionality
+
+
+
+1. jetli friends ne puchhi sake aene puchhvanu chhe 
+        1. tame koi garment koi occasion mate rent karo chho jo haa ?
+        2. ketla sudhi ni range ma karo chho ?
+           ketlu deposite aapo chho ?
+        3. kai kai jagya ae thi rent karo chho ?
+        4. garment select kai rite karo ? 
+        5. fitting kai rite karo ?
+        6. garment final thaya pachhi rent amount par negotiation karo?
+        7. return kai rite karo ?
+        8. jo tamara thi bhul ma koi bhang tut thay garment ma to kai rite handle karo ?
+        9. incase tamne koi garment gami jay to kharidvanu vicharo jo haa
+        10. kharidva mate price kai rite nakki thay 
+        11. price tamne pele thi kevama aaveli hoy k jyare tame kharidvani vaat karo tyare price reveal kare ? 
+        12. in case koi garment pele thi j tutelu chhe ane tame lai aavya chho use karva mate to su karo ?
+        
+
+2. for online shift 
+        1. jo koi saru garment online rent par maltu hoy to tame try karso ?
+        2. online service thi kai kai vastu expect karso ?
+        3. online hoy to tame website kevi pasand karso ? 
+        4. su tamne website no look clean game k funky type ? 
+        5. jyare online garment pasand karo tyare su su jovo ? 
+           khali look j jovo k comfortable chhe k nai ae pan check karvu pade ? 
+        6. jo online garment select karva tamare trial ni jarur hoy to tame trial no ketlo charge aapva mate ready chho ? 
+        7. jo tame garment select karilo to trial charge maaf thay jay to vadhare saru k na hoy to pan chale ? 
+        8. in case tame koi garment gamyu tame fitting pan karavi lidhu pan jyare tame peryu tyare tamne na gamyu to tame su karso ? 
+        9. jo tamne khabar hoy garment ketli vakhat use thay gayu chhe to tamne aena thi koi fark pade ? 
+        10. jo tamare garment kharidvu hoy ane tamne khabar chhe k ae ketli vakhat use thay gayu chhe to tamne decision levama easy padse ? 
+        11. jo tamne original price khabar hoy to vadhare saru k na khabar hoy to pan chale ? 
+        12. jo koi garment tamari required date par j booked chhe to tame extra pay karine rent karso ? 
+        13. su tame trending garment rent karva pasand karo ke look and feel wise j sara lage te ? 
+        14. su tamne koi ae perelu garment saru lage to tame same garment rent karva ichho khara ? 
+        15. su tame website par community no bhag banva ichho khara ? 
+        16. jo tamne koi garment saru lage to tame website par post karo khara ? 
+        17. 
+
+
+
+
+
+
+
+
+
+
+
+
+
 Manifest.js
 
 I am a highly paid, top-tier software engineer solving complex 

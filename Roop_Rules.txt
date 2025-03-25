@@ -1,0 +1,10 @@
+General Rules : 
+
+    work should be visual appealing and should be identified by anyone 
+    
+
+
+
+Every file must not exceed 500 lines
+modularize the code as more as possible 
+

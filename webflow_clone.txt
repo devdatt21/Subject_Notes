@@ -1,0 +1,13 @@
+//Editor.tsx
+
+EditorContainer 
+EditorOverlay
+EditorLogo
+EditorTagline
+DragPreview 
+SaveIndicator 
+
+
+Main component 
+
+Editor 

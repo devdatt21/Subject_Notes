@@ -1,13 +1,25 @@
-//Editor.tsx
+can have children 
 
-EditorContainer 
-EditorOverlay
-EditorLogo
-EditorTagline
-DragPreview 
-SaveIndicator 
+    div 
+    container 
+    section 
+    quick stack 
+    v flex 
+    h flex 
+    page slot 
+    div block 
+    list 
 
 
-Main component 
+can not have children 
 
-Editor 
+    list item 
+    link block 
+    button 
+    heading
+    paragraph 
+    text link 
+    text block 
+    block quote 
+    rich text 
+    

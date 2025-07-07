@@ -89,7 +89,19 @@ when i am about to take the bet.
 grand total = 24 hours 
 
 
-4 hours for learnings 
+10 hours 40 minutes for corporate work
+1 hour 5 minutes for healthy dinner and fun walk
+15 minutes for nutritious breakfast and tiffin
+15 minutes for shower
+
+
+Imp section :
+
+        4 hours for specialised learnings 
+        7 hours for quality sleep
+        45 minutes for robust health 
+
+
 
 7:00  wake up 
 8:15  learning 
@@ -156,7 +168,7 @@ Manifest.js
 I am a highly paid, top-tier software engineer solving complex 
 problems and making a significant impact 
 
-        i am working in a FAANG level MNC as a software developer with a whopping salary of 1 lac per month in hand 
+        i am working in a MAANG level MNC as a software developer with a whopping salary of 1 lac per month in hand 
         i am going to office with a happy and goal oriented mindset 
         i feel confident and alive being in that position 
 
@@ -197,7 +209,7 @@ Money flows to me effortlessly because i provide massive value.
 I take massive action 
 
         i apply for challenging roles and take leadership responsibility 
-        i push myself to solce complex problems and take technical authority 
+        i push myself to solve complex problems and take technical authority 
         i keep leveling up my self not settling for mediocrity 
 
 My success is inevitable. I trust that my hard work will pay off 

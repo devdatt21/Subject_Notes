@@ -1,0 +1,507 @@
+What is Docker : 
+    tool that helps you package your application and everything it needs
+    into a neat and portable box called container 
+    (so it runs the same anywhere)
+
+without docker : 
+    app works on your system, but not on another (due to different OS
+    library versions, etc.).
+    managing dependencies is hard
+    onboarding new developers is slow
+
+with docker :   
+    package your app + env  -> consitent and isolated
+    works on my machine -> problem is gone
+    easy to deploy and scale 
+
+key concepts : 
+    image(recipe of cake) : blueprint of your app (includes OS, code, dependecies)
+    container(actual cake made by the recipe) : running instance of an image
+    dockerfile : script to build an image 
+    docker engine : software that runs containers 
+    docker hub : public registry of docker images 
+    volume : persistent storage for containers
+    network : virtual network to allow containers to talk to each other 
+
+docker architecture : 
+
+    your application 
+            |
+            v 
+    docker image  <- built using dockerfile 
+            |
+            v
+    docker container <- running instance 
+            |
+            v
+    docker engine (Daemon)
+            |
+            v
+    host machine (linux/windows/macOS)
+
+basic script for Dockerfile : 
+    step 1 : use node.js base image 
+        FROM node:18 
+    step 2 : set working directory inside container 
+        WORKDIR /app 
+    step 3 : copy files 
+        COPY package*.json ./ 
+        RUN npm install 
+        COPY . .
+    step 4 : Expose port and run 
+        EXPOSE 3000
+        CMD ["node", "app.js"]
+
+RUN it : 
+
+    docker build -t my-node-app .
+
+    docker run -p 3000:3000 my-node-app 
+
+common docker CLI commands : 
+
+    docker build -t name . 
+        build image from dockerfile 
+    
+    docker images 
+        list available images 
+    
+    docker run name 
+        run a container from image 
+    
+    docker run game 
+        run a container from image 
+    
+    docker ps 
+        showing running containers 
+    
+    docker ps -a 
+        show all containers (stopped + running)
+    
+    docker stop <id> 
+        remove a container 
+    
+    docker rm <id> 
+        remove a container 
+    
+    docker rmi <image> 
+        remove an image 
+    
+    docker logs <id> 
+        view container logs 
+    
+    docker exec -it <id> bash 
+        open shell inside container 
+    
+docker volumes : 
+
+    #create volume 
+    docker volume create mydata 
+
+
+    # use it in a container 
+    docker run -v mydata:/app/data my-image 
+
+    (
+        in this command mydata is created (if not already present)
+        docker mounts this volume into container at the location /app/data
+        any files the app writes to /app/data are stored in the volume, not 
+        inside the container filesystem 
+        even if you delete the continer the data in mydata persists 
+
+    )
+
+docker networks : 
+
+    containers can communicate via internal docer network 
+
+    cmds : 
+
+    docker network create mynet 
+        create a virtual bridge network named mynet 
+        think of it as a private LAN for docker containers 
+
+    docker run --network=mynet --name=db my-db-image 
+        starts a container from my-db-image 
+        assigns it the name db 
+        connects it to the mynet network 
+
+    docker run --network=mynet --name=api my-api-image 
+        starts another container from my-api-image 
+        assigns it the name api 
+        also connects it to the same mynet network 
+
+    (
+        docker bydefault isolates container, so they can't talk 
+        to each other by hostname
+    )
+
+docker compose (multi-container setup)
+
+    create docker-compose.yml 
+
+    version : '3.8
+
+    services:
+        backend:
+            build: .
+            ports:
+              - "3000:3000"
+        
+        mongo:
+            image: mongo
+            ports:
+              -"27017:27017"
+        
+        run it all : 
+
+            docker-compose up
+
+docker hub - image registry 
+
+    search https://hub.docker.com 
+
+    pull : 
+
+        docker pull nginx
+        docker run -p 80:80 nginx 
+
+    
+    when to use docker 
+    
+when to use docker 
+    use docker when :
+        you dont want to ship code with consistent env 
+        you work on microservices 
+        you need isolation
+        you're deploying to cloud or CI/CD 
+    
+    avoid if : 
+        you're doing simple scripting or local-only tasks 
+        you don't want to learn new tooling yet (steep leaning curve).
+    
+
+real life ex. 
+
+    imagine you are building a pyton api with postgreSQL DB. 
+
+    you want : 
+
+        one container for python backend 
+        one for postgreSQL 
+        both isolated but connected 
+    
+    docker makes this easy via docker compose 
+
+best practices : 
+    
+    keep Dockerfile minimal 
+    use .dockerignore (like .gitignore)
+    don;t store sensitive env vars in Dockerfile 
+    use volumes for databases or large data 
+    tag your images (myapp:v1)
+
+lifecycle summary 
+    
+    grapj TD 
+    
+    (a) [write Dockerfile] --> (b) [build image]
+    (b) --> (c) [run container]
+    (c) --> (d) [app routing]
+    (d) --> (e) [stop container]
+    (e) --> (f) [remove container or image]
+
+what is docker engine = core of docker 
+
+    3 main parts : 
+
+        docker CLI                      <- you type commands here 
+            sends your request (docker run ..) as an http api 
+            req to the docker Daemon(dockerd), usually over a 
+            Unix socket (/var/run/docker.sock)
+
+            |
+            v 
+
+        docker Daemon                   <- core process (dockerd)
+        -manages containers, images
+        -talks to containerd    
+            it's the main bg process (like a server) that handles all docker requests
+            parses your command 
+            checks if the image exists locally if not it pulls from docker hub
+            sends the container creation task to containerd 
+
+            |
+            v
+
+        containerd                      <- Manages low-level container lifecycle 
+        (open-source project)
+            a lightweight container runtime that manages container lifecycle : start, stop,
+            pause, snapshot etc 
+
+            containerd was originally part of Docker but is now an independent CNCF project 
+            
+            talks to lower-level runtimes (like runc) to actually launch containers 
+            manages file system snapshots (image layers)
+            handles image management, containers execution
+
+
+            receives instructions from docker daemon (dockerd)
+            manages the entire lifecycle of a container 
+                create 
+                start 
+                stop 
+                pause 
+                delete 
+            works with image layers (snapshots)
+            delegates actual container creation to runc (low-level runtime)
+
+            what it does : 
+
+                docker run --name my-app nginx 
+
+                1. docker CLI sends this to dockerd 
+
+                POST /containers/create
+                {
+                    "Image" : "nginx",
+                    "Name" : "my-app"
+                }
+
+                2. dockerd parses this and talks to containerd 
+
+                containerdClient.NewContainer(ctx, containerOpts)
+
+                then containerd : 
+
+                    pulls image (if not present) from docker hub using its own image service 
+                    creates a snapshot of the image filesystem 
+                        uses overlayFS (more below) creates a container task, but doesn't run it yet 
+                    
+                    creates a container task but doesn't run it yet 
+                    finally containerd calls runc to launch the conatainer with 
+                        namespaces 
+                        cgroups 
+                        volumes 
+                        networking
+                        entrypoint(nginx in this case)
+                
+                filesystem snapshots - what containerd manages 
+
+                FROM node:18    # base layer 
+                COPY . .        # adds new layer 
+                RUN npm install # adds another layer 
+
+                Each layer is a read-only snapshot 
+
+                containerd uses : 
+                    overlayFS (in linux) : to merge multiple layers into one unified view 
+                    adds a read-write top layer for the container to make temp changes
+                
+                this gives : 
+
+                    container filesystem = base layers (read-only) + RW top layer 
+
+                    if the container writes to /app/data/file.txt, it goes in RW layer only.
+
+                containerd - runc (handoff)
+
+                after setting up the file system and configs, containerd finally calls runc with a JSON file 
+                (config.json) which decribes : 
+
+                    linux namespaces 
+                    cgroups limits 
+                    rootfs path 
+                    user/group
+                    entrypoint (like nginx or node)
+
+                    runc uses this to start a new process in an isolated container environment 
+
+            
+
+
+
+            |   
+            v
+
+        runc (runtime)                  <- Launches containers using linux namespaces 
+            it's a low-level container runtime that talks direclty 
+            to the linux kernel to start containers 
+
+            runc is the default runtime in docker and comliant with 
+            the open container initiative (OCI).
+
+            what it does : 
+
+                runc tells the linux kernel :
+
+                create a new isolated process 
+                use linux namespace (explained below)
+                apply resources limits via cgroups 
+                create a fake root filesystem using chroot 
+                blind mount necessary volumes
+                set hostname, network interface 
+                start the app like (node app.js)
+            
+            so the container is really just 
+
+                a normal linux process with fencing (namespaces) and 
+                some handcuffs(cgroups)
+
+        Linux kernel feature (namespaces + cgroups)
+
+        Namespaces - isolation 
+
+        namespaces isolate what a process can see 
+
+        each container gets its own 
+
+        pid: own process tree (can't see host PIDs)
+        net: own network stack (IP, routing, interfaces)
+        mnt: own filesystem mounts 
+        uts: own hostname 
+        ipc: own inter-process communication 
+        user: own user and groups (root inside container ≠ root on host)
+
+        cgroups - resource limiting 
+
+            control groups limit how much CPU, RAM, or I/O a container can use 
+            
+            docker run --memory=512m -cpus=1 my-image 
+
+                this craetes cgroups rules : 
+                    no more than 512MB RAM 
+                    only 1 CPU core 
+            
+        chroot + mount namespace - fake filesystem 
+
+            the container is started with a root filesystem made of your docker image 
+                docker sets up a chroot jail : inside this jail, / is the root of the image 
+                so even if the container process accesses /etc/passwd, it sees the 
+                one inside the container image, not the host's 
+        
+
+        each container (by default) gets:
+            a private IP address from the docker bridge network (usually 172.17.0.x)
+            a virtual Ethernet interface (eth0)
+            Gateway to communicate with other containers and internet 
+
+        
+        docker does this by : 
+            creating a linux bridge (docker0)
+            for each container adds a veth(virtual ethernet pair)
+                adds a veth (virtual Ethernet pair)
+                one end goes inside container(eth0)
+                other end connects to the bridge(docker0)
+
+            ex. 
+                docker exec -it my-container ip addr 
+
+                shows ->  eth0 : 172.17.0.2
+
+docker DNS : no need for IPs 
+
+internal DNS 
+    when containers are in the same custom network, docker sets up 
+    an internal DNS resolver 
+
+    so if a container is named db, other container can access it with 
+    db:port 
+
+    docker run --network=mynet --name=db my-db-image  
+
+    docker run --network=mynet --name=api my-api-image 
+
+    inside api container : 
+
+        const DB_URL = 'mongodb://db:27017/products';
+
+    no IP needed docker's internal DNS resolves db->its private IP 
+
+
+
+internals (low-level):
+
+docker run my-image 
+
+    docker CLI sends req to dockerd via HTTP API 
+
+    dockerd 
+        parses image and container config 
+        talks to containerd to create a container instance 
+    
+    containerd uses runc (default runtime) to: 
+        set up linux namespaces (PID, NET, MOUNT, etc)
+        apply cgroups (resource limits)
+        start a process inside a chroor-like environment
+
+
+
+where Host machine live : 
+    The host is your actual machine (windows/macos/linux)
+    it runs docker engine 
+    in docker desktop, docker runs inside a lightweight linux VM 
+    using hyperkit or WSL2
+
+so : 
+    on linux docker runs natively 
+    on windows/macos docker creats a virtual linux kernel as the real host
+    where containers run.
+
+real world analogy : 
+
+    kubernetes = airport air traffic control (manages planes)
+    container = airplane engines (actually run the plane)
+    runc = Engine parts that turn commands into movement
+    linux kernel = the laws of physics (isolation, process control)
+
+What is kubernetes : 
+    open source container orchestration platform
+
+when you install kubernetes : 
+
+    you install a control plane on one machine(or more, for high availability)
+    you install a kubelet agent on each of the other machines 
+    you join all worker machines (nodes) to the control plane
+
+    that makes one kubernetes cluster 
+
+install kubernetes and a container runtime on all machines 
+    you need tools like 
+        kubelet (the agent that talks to the master)
+        kubeadm (for initializing the cluster)
+        containerd or docker (to actually run containers)
+    
+one master node 
+    initialize the cluster 
+        kubeadm init 
+    
+    this sets up : 
+
+        api server 
+        etcd (cluster start datebase)
+        scheduler 
+        controller manager 
+    
+    it also gives you a join token like:
+
+    kubeadm join <master-ip>:6443 --token abcdef.12345124 ..
+
+on worker nodes 
+
+    kubeadm join <master-ip>:6443 --token ...
+
+    this resisters the machine to the cluster
+
+    now this worker machine becomes a Node in kubernetes!
+
+
+once joined, what happens ? 
+
+    the master can now schedule pods(containers) on any node 
+    each node runs 
+        kubelet - to report health, run pods 
+        containerd - to run containers 
+    
+    all nodes talk to the control plane via HTTPS (port 6443)
+

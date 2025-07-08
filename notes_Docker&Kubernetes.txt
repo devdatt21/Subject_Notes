@@ -505,3 +505,59 @@ once joined, what happens ?
     
     all nodes talk to the control plane via HTTPS (port 6443)
 
+
+                 Kubernetes Cluster
+        +---------------- Control Plane --------------+
+        |                                             |
+        |   kube-apiserver                            |
+        |   scheduler                                 |
+        |   controller-manager                        |
+        |   etcd (cluster database)                   |
+        +------------------+--------------------------+
+                           |
+                           | (API Calls via 6443)
+                           ↓
+        +---------------------------------------------+
+        |                 Node 1 (Worker)             |
+        |   - kubelet                                 |
+        |   - containerd (or Docker)                  |
+        |   - runs Pods                               |
+        +---------------------------------------------+
+                           ↓
+        +---------------------------------------------+
+        |                 Node 2 (Worker)             |
+        |   - kubelet                                 |
+        |   - containerd                              |
+        |   - runs Pods                               |
+        +---------------------------------------------+
+
+
+cluster : all the machines together(master + nodes)
+node : one physical or virtual machine (worker)
+pod : smallest unit in kubernetes (hold containers)
+kubelet : agetn running on each node to talk to the master 
+scheduler : decides where to place pods (on which node)
+etcd : database that stores cluster state (key-value store)
+
+
+how master node makes decisions, or how pods get scheduled 
+and communicate accross machines (networking)?
+
+kubernetes master node runs a scheduler, which decides : 
+    which node should run a pod?
+
+    based on : 
+        available CPU, memory
+        Taints, labels, node selectors
+        affinity rules 
+        past usage, constraints etc 
+
+    
+    components involved in scheduling : 
+
+        kube-apiserver : entry point receives all pod creation requests 
+        etcd : distributed key-value store (stores curretn state of the cluster)
+        kube-scheduler : decides where to run the pod 
+        kube-controller-manager : ensure the desired state in maintained (eg. if a node goes down, it reschedules pods)
+        kubelet(on node) : pulls the pods spec from the api server and runs it using containerd     
+    

@@ -1,0 +1,188 @@
+What are semantic HTML tags and why are they important?
+
+Meaningful structure	Easier to read and understand
+Accessibility	        Helps screen readers and assistive tech
+SEO	                    Helps search engines interpret content more accurately
+Maintainability	        Easy to maintain, update, and scale
+
+
+Difference between <section>, <article>, and <div>?
+
+<div>	    Plain cardboard box (no label)      no use in SEO 
+<section>	Labeled box with grouped items      slightly use in SEO 
+<article>	A single complete book or magazine  very useful in SEO 
+
+
+How does the CSS specificity hierarchy work?
+
+Inline styles > IDs > Classes > Elements
+
+
+What is the difference between em, rem, %, and px?
+
+px → Absolute unit; always the same fixed size regardless of anything else.
+
+% → Relative to the parent's size (width/height or font-size depending on the property).
+
+em → Relative to the element’s own font-size, which may be inherited or explicitly set.
+
+rem → Relative to the root (<html>) font-size, providing consistent scaling across the page.\\\
+
+
+Flexbox vs Grid – when to use each?
+
+you should use both grid and flexbox in a page 
+    grid is like a structure of a page 
+    flex is like a structure of a row
+
+    flex-direction	Main	Container	Set layout direction (row or column)
+    justify-content	Main	Container	Align/space items on main axis
+    align-items	    Cross	Container	Align all items on cross axis
+    flex-wrap	    N/A	    Container	Allow items to wrap
+    flex-grow	    Main	Item	    Control growth when extra space exists
+    flex-shrink	    Main	Item	    Control shrink when space is tight
+    flex-basis	    Main	Item	    Set initial/preferred size
+    align-self	    Cross	Item	    Align one item differently
+
+
+What is the difference between absolute, relative, fixed, and sticky positioning?
+
+Feature	                static	relative	absolute	fixed	sticky
+Takes up space	        ✅	    ✅	    ❌	        ❌	    ✅
+Removed from flow	    ❌	    ❌	    ✅	        ✅	    ❌
+Scrolls with page	    ✅	    ✅	    ❌	        ❌	    ✅/❌
+Parent reference	    N/A	    Self	    Nearest  	Viewport	Scroll container
+                                            positioned
+                                            ancestor
+
+
+Explain reflow vs repaint.
+
+Reflow	Browser recalculates layout (sizes, positions) — expensive
+Repaint	Browser redraws visuals (color, shadows) — lighter
+
+
+What is Critical CSS and how can it improve performance?
+
+Critical CSS is the minimum CSS needed to render above-the-fold content quickly 
+— it boosts page speed, SEO, and user experience by reducing render-blocking.
+
+
+What Are Web Vitals?
+
+Web Vitals are a set of metrics defined by Google to measure the real-world \
+performance of a webpage — especially user experience.
+
+
+3 core web vitals 
+    LCP - largest contentful page 
+    FID - first input delay 
+    CLS - cumulative layout shift
+
+
+How do media queries work?
+
+Media queries let you apply CSS conditionally based on device or screen properties 
+(like width, orientation, resolution) — essential for making responsive websites.
+
+
+What is z-index and how does stacking context work?
+
+The z-index in CSS controls the stacking order of elements along the z-axis (depth) 
+— i.e., which element appears in front of or behind another.
+
+A stacking context is a local environment that controls how child elements are 
+stacked inside it, independently of the rest of the page.
+
+🔐 Children are bound by the rules of their parent stacking context.
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~js~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Hoisting is JavaScript's default behavior of moving declarations to the top of their 
+scope during the compile phase (before the code runs).
+
+
+var	                                ✅ Yes	undefined	Function-scoped, can be re-declared
+let & const	                        ✅ Yes	❌          Not initialized	Exists in Temporal Dead Zone
+function	                        ✅   Yes	✅          Fully hoisted	Can call before definition
+arrow function (const x = () => {})	❌ No	❌          Not hoisted	Treated as variable
+
+
+var	    Function-scoped, hoisted, can be re-declared → legacy use
+let	    Block-scoped, hoisted (TDZ), reassignable → modern variable
+const	Block-scoped, hoisted (TDZ), no reassignment → use for constants
+
+
+== compares values after converting types (loose equality), while === compares both value and type without 
+conversion (strict equality) — always prefer ===.
+
+A closure is a function that remembers its outer lexical scope even after the outer function has finished executing.
+
+Yes, closures in JavaScript often mimic or support OOP principles, even though closures themselves are 
+not OOP-specific constructs.
+
+JavaScript can only do one thing at a time — it has one main thread where all code runs.
+
+
+Call Stack	                Runs your actual code — handles function calls (LIFO: last-in-first-out)
+Web APIs	                Browser-provided features (setTimeout, DOM, fetch, etc.)
+Callback Queue (Task Queue)	Stores callback functions waiting to run
+Event Loop	                Keeps checking if the stack is empty, then pushes queued tasks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -455,6 +455,9 @@ real world analogy :
     runc = Engine parts that turn commands into movement
     linux kernel = the laws of physics (isolation, process control)
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~kubernetes~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 What is kubernetes : 
     open source container orchestration platform
 

@@ -461,6 +461,440 @@ real world analogy :
 What is kubernetes : 
     open source container orchestration platform
 
+Major components : 
+    pods
+    service (internal, external)
+    ingress routing pulic requests
+    deployment 
+    stateful set (deployment of DB(usually outside k8s))
+    config maps (to map different services)
+    secrets (to add env api key)
+    volumns (manage persistent state)
+
+
+worker machine in k8s : 
+
+    3 node(node is physical machine) processes 
+        kubelet : primary agent that runs on each worker node, communicate with control plane, manages pod lifecycle, reports node health, pulls pod specs, container management 
+
+        kube proxy : network proxy, network component that handles traffic routing, service discovery, load balancing, network rules, inter-pod communication
+
+        container runtime :  the software that actually runs container(containerd, docker, CRI-O), container Execution, image management, resource isolation, container monitoring 
+
+┌────────────── Master Node (Control Plane) ──────────────┐
+│                                                         │
+│  ┌─────────────────┐    ┌─────────────────┐             │
+│  │  kube-apiserver │◄──►│      etcd       │             │
+│  │   (port 6443)   │    │  (key-value DB) │             │
+│  └────────┬────────┘    └─────────────────┘             │
+│           │                                             │
+│           ▼                                             │
+│  ┌─────────────────┐    ┌─────────────────┐             │
+│  │ kube-scheduler  │    │   controller-   │             │
+│  │ (pod placement) │    │    manager      │             │
+│  └─────────────────┘    └─────────────────┘             │
+│                                                         │
+└──────────────────────────┬──────────────────────────────┘
+                           │
+                           │ (HTTPS API calls)
+                           ▼
+                    Worker Nodes
+
+
+┌─────────────── Worker Node ───────────────┐
+│                                           │
+│  ┌─────────┐    ┌──────────────┐          │
+│  │kubelet  │◄──►│ kube-proxy   │          │
+│  │         │    │              │          │
+│  └────┬────┘    └──────────────┘          │
+│       │                                   │
+│       ▼                                   │
+│  ┌─────────────────┐                      │
+│  │ container       │                      │
+│  │ runtime         │                      │
+│  │ (containerd)    │                      │
+│  └─────────────────┘                      │
+│       │                                   │
+│       ▼                                   │
+│  ┌─────────────────┐                      │
+│  │   Pod 1         │   Pod 2              │
+│  │ ┌─────────────┐ │ ┌─────────────┐      │
+│  │ │Container A  │ │ │Container B  │      │
+│  │ └─────────────┘ │ └─────────────┘      │
+│  └─────────────────┘                      │
+└───────────────────────────────────────────┘
+     
+master machine(brain of kubernetes cluster) in k8s : 
+
+4 main process : 
+    kube-apiserver - the entry point : the front door of kubernetes all requests go through here, api gateway(handles all REST API requests (kubectkm kubelet, etc)), authentication and authorization(validates who can do what), request processing(validates and processes all cluster operations), communication hubs(all components talk through the API server) 
+
+    ex . kubectl create deployment nginx --image-ngix 
+         kubectl get pods 
+         kubeclt delete service my-service 
+
+         all these become HTTP requests to kube-apiserver on port 6443
+
+    etcd : The cluster database, distributed key-value store that holds all cluster data, cluster data (current state of all resources(pods, services, deployments)), configuration data(configmaps, secret, node information), metadata(lables, annotations, resources definitions)
+
+    it's the source of truth for the entire cluster  
+
+    kube-scheduler - The pod placement engine, decides which node should run each pod, watches api server(looks for pods without assigned node), evaluates nodes(checks available resources, contraints, policies), makes placement decision(assigns pods to best-fit nodes), update etcd(stores the scheduling decision)
+
+    #scheduling factors : 
+        CPU/Memory availability
+        node labels and taints 
+        pod affinity/anti-affiity rules 
+        resources requests and limits 
+        hardware contraints (GPU, SSD, etc.) 
+
+    Kube-controller-manager - the state manager : collection of controllers that ensures desired state, delpoyments controller(manages replicaSets and rolling updates), replicaSet controller(ensures correct number of pod replicas), node controller (monitors node health and handles failure)
+    service controller : manages load balances and endpoints 
+
+    ex. if you want 3 nginx pods but only 2 are running replicaset controller will create 1 more pod to match desired state 
+
+
+
+
+
+┌────────────── Master Node (Control Plane) ──────────────┐
+│                                                         │
+│  ┌─────────────────┐    ┌─────────────────┐             │
+│  │  kube-apiserver │◄──►│      etcd       │             │
+│  │   (port 6443)   │    │  (key-value DB) │             │
+│  └────────┬────────┘    └─────────────────┘             │
+│           │                                             │
+│           ▼                                             │
+│  ┌─────────────────┐    ┌─────────────────┐             │
+│  │ kube-scheduler  │    │   controller-   │             │
+│  │ (pod placement) │    │    manager      │             │
+│  └─────────────────┘    └─────────────────┘             │
+│                                                         │
+└──────────────────────────┬──────────────────────────────┘
+                           │
+                           │ (HTTPS API calls)
+                           ▼
+                    Worker Nodes
+
+
+minikube and kubectl 
+
+minikube : is a tool that runs a single-node kubernetes cluster locally on your machine for development and testing 
+
+why minikube : 
+
+    instead of setting up multiple physical machine 
+
+    master node (physical machine) + worker node 1 
+
+    minikube creates everything in one place : 
+
+    your laptop/desktop -> minikube VM -> complete k8s cluster 
+
+what minikube provides : 
+
+    control plane components : 
+        api server, etcd, scheduler, controller-manager 
+
+    worker node components : 
+        kubelet, kube-proxy, container runtime 
+
+    all in one VM or container : 
+
+    kubectl : 
+
+        is the command-line interface to interact with any Kubernetes cluster (local or remote)
+
+    #kubectl is your remote control for kubernetes  
+    kubectl create deployment nginx --image=nginx 
+    kubectl get pods 
+    kubectl delete service my-service 
+
+    #these become HTTP requests to kube-apiserver (port 6443)
+
+
+
+how to setup minikube 
+
+choco install minikube 
+choco install kubernetes-cli 
+
+
+start minikube cluster 
+
+#start minikube (creates a local k*s cluster)
+minikube start 
+
+#this does what "kubeadm init" does in your notes but automatically : 
+# creates control plane (API server, etcd, scheduler, controller-manager)
+# adds worker node componenets (kubelet, kube-proxy, containerd)
+# sets up networking 
+# configures kubectl to talk to this cluster 
+
+verify setup 
+
+#check cluster status 
+minikube status 
+
+should show :  
+minikube 
+type : control plane 
+host : running 
+kubelet : running 
+apiserver : running 
+kubeconfig : configured 
+
+check nodes 
+kubectl get nodes 
+
+should show: 
+name status roles age version
+minikube ready control-plane 1m v1.28.3
+
+
+┌─────────────────── Your Machine ───────────────────┐
+│                                                    │
+│  ┌─────────────── Minikube VM ─────────────────┐   │
+│  │                                             │   │
+│  │  ┌──── Control Plane ────┐                  │   │
+│  │  │  • kube-apiserver     │                  │   │
+│  │  │  • etcd               │                  │   │
+│  │  │  • kube-scheduler     │                  │   │
+│  │  │  • controller-manager │                  │   │
+│  │  └─────────────────────────┘                  │   │
+│  │              │                               │   │
+│  │              ▼                               │   │
+│  │  ┌──── Worker Node ──────┐                  │   │
+│  │  │  • kubelet            │                  │   │
+│  │  │  • kube-proxy         │                  │   │
+│  │  │  • containerd         │                  │   │
+│  │  │  • Your Pods          │                  │   │
+│  │  └─────────────────────────┘                  │   │
+│  └─────────────────────────────────────────────┘   │
+│                                                    │
+│  kubectl ──────────────────────────────────────────┘
+│     (talks to API server via port 6443)
+└────────────────────────────────────────────────────┘
+
+
+basic kubectl commands for local development 
+
+deployment commands : 
+
+create a deployment (like fro your notes)
+kubectl create deployment nginx --image=nginx --replicas=3
+
+this triggers the same flow you documented:
+kubectl -> kube-apiserver 
+apiserver ->etcd (store deployment)
+controller-manager creates replicaSet 
+scheduler assigns pods to nodes (just one node in minikube)
+kubelet starts containers 
+
+monitoring commands 
+    
+    #see all resources 
+    kubectl get all 
+
+    #watches pods in real-time 
+    kubectl get pods -w 
+
+    #see detailed pod info 
+    kubectl describe pod <pod-name> 
+
+    #check logs 
+    kubectl logs <pod-name> 
+
+
+service & networking 
+
+#expose deployment as service 
+kubectl expose deployment nginx --port=80 --type=NodePort 
+
+#access service in minikube 
+minikube service nginx --url 
+#this gives you a url like http://192.18.48.2:31234
+
+
+cluster management 
+
+minikube start //start cluster 
+minikube stop 
+minikube delete 
+minikube pause 
+minikube unpause // resume cluster 
+
+
+access & debugging 
+
+minikube dashboard  // open k8s web ui 
+minikube ssh  // ssh into minikube VM 
+minikube logs //see minikube ligs 
+
+
+docker integration 
+minikube deocker-env //use minikube's docker daemon 
+eval $(minikube docker-env) //cofigure shell 
+
+
+real example : deploy your docker app 
+
+minikube start 
+
+kubectl create deployment my-node-app --image=my-node-app --replicas=2
+
+kubectl expose deployment my-node-app --port=300 --type=NodePort 
+
+minikube service my-node-app --url 
+
+
+Tool	    Purpose	                    Scope
+minikube	Creates local K8s clusters	Local only
+kubectl	    Controls ANY K8s cluster	Local + Remote
+
+
+
+
+
+How Kubernetes Works in Layman Terms
+Think of Kubernetes like a smart apartment building manager that automatically handles everything for you.
+
+The Building Manager Analogy
+Master Node = Building Manager's Office
+┌─── Floor 1 (Worker Node) ───┐ │ │ │ 🏠 Floor Manager (kubelet) │ │ "I manage this floor" │ │ │ │ 📡 Mail Room (kube-proxy) │ │ "I handle deliveries" │ │ │ │ 🏗️ Maintenance (containerd) │ │ "I actually build rooms" │ │ │ │ 🏠 Room 1A (Pod) │ │ └─ 📦 Container │ │ │ │ 🏠 Room 1B (Pod) │ │ └─ 📦 Container │ └─────────────────────────────┘
+
+Translation: "Hey building manager, I need 3 identical apartments for my Netflix service"
+
+Step 2: The Chain Reaction
+How It Uses Your Laptop's Resources
+Your laptop is essentially pretending to be a whole data center:
+
+Resource Breakdown:
+What Happens When You Run Netflix App:
+Resource Usage:
+
+CPU Spike: ~20-30% for 10 seconds (downloading image, starting containers)
+RAM Usage: +300MB (3 copies × 100MB each)
+Disk I/O: Pulls 150MB Netflix image from internet
+Network: Internal communication between components
+The Complete 7-Layer Architecture
+Here are ALL the layers from your hardware to your microservice:
+
+Layer 1: Physical Hardware
+Layer 2: Operating System
+Layer 3: Virtualization/Container Platform
+Layer 4: Kubernetes Cluster
+Layer 5: Kubernetes Resources
+Layer 6: Pods (Runtime Environment)
+Layer 7: Your Application
+Real Resource Flow Example
+When someone visits your Netflix app:
+
+Resource consumption during this:
+
+CPU: Spikes to 40% for 2 seconds
+RAM: Uses 50MB for request processing
+Network: 5MB/sec video streaming
+Disk: Reads movie file at 10MB/sec
+Why So Many Layers?
+Each layer has a specific job:
+
+Layer	Job	Example
+Hardware	Raw computing power	"I have 8 CPU cores available"
+OS	Manage hardware safely	"Process A gets 2 cores, Process B gets 1"
+Docker	Isolate applications	"Netflix can't see Banking app's files"
+Kubernetes	Orchestrate containers	"If Netflix crashes, restart it automatically"
+Resources	Define what you want	"I want 3 Netflix copies always running"
+Pods	Runtime packaging	"Group Netflix app with its config files"
+Application	Your actual service	"Stream movies to users"
+The Magic of Microservices
+Instead of one giant application, you break it into pieces:
+
+Benefits:
+
+Scaling: Only scale the video service when more people watch
+Updates: Update recommendations without touching payments
+Failures: If payments fail, videos still work
+Teams: Different teams can work on different services
+Your Laptop as a Mini Data Center
+Kubernetes makes your laptop pretend to be Google's data center:
+
+This lets you learn real data center skills on your personal computer!
+
+The beauty is that the same kubectl commands that work on your laptop will work identically on a $1 million production cluster at Netflix!## Real Example: You Want to Run Netflix
+
+Let's say you want to run a "Netflix-like" app with 3 copies for reliability:
+
+Step 1: Your Request
+Translation: "Hey building manager, I need 3 identical apartments for my Netflix service"
+
+Step 2: The Chain Reaction
+How It Uses Your Laptop's Resources
+Your laptop is essentially pretending to be a whole data center:
+
+Resource Breakdown:
+What Happens When You Run Netflix App:
+Resource Usage:
+
+CPU Spike: ~20-30% for 10 seconds (downloading image, starting containers)
+RAM Usage: +300MB (3 copies × 100MB each)
+Disk I/O: Pulls 150MB Netflix image from internet
+Network: Internal communication between components
+The Complete 7-Layer Architecture
+Here are ALL the layers from your hardware to your microservice:
+
+Layer 1: Physical Hardware
+Layer 2: Operating System
+Layer 3: Virtualization/Container Platform
+Layer 4: Kubernetes Cluster
+Layer 5: Kubernetes Resources
+Layer 6: Pods (Runtime Environment)
+Layer 7: Your Application
+Real Resource Flow Example
+When someone visits your Netflix app:
+
+Resource consumption during this:
+
+CPU: Spikes to 40% for 2 seconds
+RAM: Uses 50MB for request processing
+Network: 5MB/sec video streaming
+Disk: Reads movie file at 10MB/sec
+Why So Many Layers?
+Each layer has a specific job:
+
+Layer	Job	Example
+Hardware	Raw computing power	"I have 8 CPU cores available"
+OS	Manage hardware safely	"Process A gets 2 cores, Process B gets 1"
+Docker	Isolate applications	"Netflix can't see Banking app's files"
+Kubernetes	Orchestrate containers	"If Netflix crashes, restart it automatically"
+Resources	Define what you want	"I want 3 Netflix copies always running"
+Pods	Runtime packaging	"Group Netflix app with its config files"
+Application	Your actual service	"Stream movies to users"
+The Magic of Microservices
+Instead of one giant application, you break it into pieces:
+
+Benefits:
+
+Scaling: Only scale the video service when more people watch
+Updates: Update recommendations without touching payments
+Failures: If payments fail, videos still work
+Teams: Different teams can work on different services
+Your Laptop as a Mini Data Center
+Kubernetes makes your laptop pretend to be Google's data center:
+
+This lets you learn real data center skills on your personal computer!
+
+The beauty is that the same kubectl commands that work on your laptop will work identically on a $1 million production cluster at Netflix!
+
+Similar code found with 2 license types - View matches
+
+
+
+
+
+
+
+
 when you install kubernetes : 
 
     you install a control plane on one machine(or more, for high availability)

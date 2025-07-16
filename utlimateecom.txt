@@ -1,0 +1,73 @@
+What will be the base architecture 
+what are the key pain points of business owners we are willing to solves
+what will be the base modules of the platform
+who will be the lead of the project.
+who will be the business/sales person of the project.
+what will be software development methodology we are going to use.
+do we have to replace current services of PK or lano with our newly built ecomm 2.o services 
+if we will build mobile apps what will be the tech stack of that
+what will the type of apis?
+
+
+~~~~~~~~~~~~~~~~~~~domain specific~~~~~~~~~~~~~~~~~
+
+served clients : 
+    annies
+    pcs
+    lano
+    PK
+    broken bottle
+    sunita shekhawat 
+    a secrate admirer 
+    eyeglasses123
+    offgridknives
+    aceofficemachine
+
+served industry :
+    ecommerce : drugs, plants, 3d models, boat spare-parts, jewlery, high-end earth moving machinaries, apparel/wearables, cutleries, eyeware, knives, porn, stationary
+    healthcare : erp 
+    adulteries : video streaming platform, 
+    marketing : social media handling 
+
+
+topics to know : 
+    buy box in amazon 
+    rankings in amazon 
+    price war in amazon 
+    to how many market place a seller can sell 
+    how many payment gateways a seller wants to inegrate
+    how many way a customer can pay 
+    rules about things for selling online 
+    sell outcomes not solutions 
+    a business owner wants to build his own website on his own without needing any developer's support 
+    a business owner wants us to make and manage all the channels 
+    a business owner wants us to handle whole business 
+
+
+base modules : 
+    
+    Authentication and authorization(RBAC)
+
+industry specific modules : 
+
+    ecommerce : 
+        product information management 
+    
+
+client specific modlues : 
+
+
+
+
+
+
+
+how many ways a business owner will come to us for using different services 
+business owner will be majorly 
+
+
+
+
+
+
+
